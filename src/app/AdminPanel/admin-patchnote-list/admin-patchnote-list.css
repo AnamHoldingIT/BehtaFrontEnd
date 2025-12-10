@@ -1,0 +1,493 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.content-shell {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 10px;
+  min-height: 0;
+}
+
+/* ===== هدر صفحه ===== */
+
+.page-header {
+  border-radius: 20px;
+  padding: 14px 16px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    radial-gradient(circle at 0 0, rgba(255, 228, 138, 0.12), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(130, 85, 255, 0.15), transparent 60%),
+    linear-gradient(145deg, rgba(5, 5, 24, 0.96), rgba(7, 6, 30, 0.98));
+  box-shadow:
+    0 16px 38px rgba(0, 0, 0, 0.95);
+}
+
+.page-header-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.page-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.page-kicker {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(154, 160, 184, 0.9);
+}
+
+.page-title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.page-title .highlight {
+  font-size: 1.15rem;
+  font-weight: 800;
+  background: linear-gradient(120deg, #ffe48a, #ff7ad9, #b7a1ff);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.page-title .sub {
+  font-size: 0.8rem;
+  color: rgba(154, 160, 184, 0.95);
+}
+
+.page-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.btn-primary,
+.btn-ghost {
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #ffe48a, #ff7ad9);
+  color: #09051a;
+  box-shadow:
+    0 0 14px rgba(255, 228, 138, 0.85),
+    0 0 24px rgba(130, 85, 255, 0.7);
+}
+
+.btn-primary i {
+  font-size: 0.9rem;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  background: rgba(7, 8, 35, 0.96);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: rgba(228, 230, 255, 0.9);
+}
+
+.btn-ghost i {
+  font-size: 0.9rem;
+}
+
+.btn-ghost:hover {
+  border-color: rgba(255, 228, 138, 0.8);
+}
+
+/* فیلترها */
+
+.page-header-filters {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.field label {
+  display: block;
+  font-size: 0.72rem;
+  color: rgba(154, 160, 184, 0.95);
+  margin-bottom: 4px;
+}
+
+.pill-select {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.pill-select button {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(8, 10, 38, 0.96);
+  color: rgba(228, 230, 255, 0.9);
+  font-size: 0.74rem;
+  padding: 3px 9px;
+  cursor: pointer;
+}
+
+.pill-select button.is-active {
+  background: linear-gradient(120deg, rgba(255, 228, 138, 0.15), rgba(130, 85, 255, 0.2));
+  border-color: rgba(255, 228, 138, 0.85);
+  color: #fefcf7;
+}
+
+.sort-shell {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sort-shell select {
+  background: rgba(8, 10, 38, 0.96);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #f3f4ff;
+  font-size: 0.74rem;
+  padding: 4px 22px 4px 6px;
+}
+
+.sort-shell select:focus-visible {
+  outline: none;
+  border-color: rgba(255, 228, 138, 0.85);
+}
+
+.sort-shell .icon-toggle {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(7, 8, 35, 0.98);
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: rgba(228, 230, 255, 0.9);
+}
+
+.search-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-shell-compact {
+  position: relative;
+}
+
+.search-shell-compact input {
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(6, 7, 30, 0.96);
+  padding: 5px 26px 5px 8px;
+  font-size: 0.78rem;
+  color: #f3f4ff;
+}
+
+.search-shell-compact input::placeholder {
+  color: rgba(154, 160, 184, 0.75);
+}
+
+.search-shell-compact i {
+  position: absolute;
+  inset-inline-start: 9px;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  font-size: 0.85rem;
+  color: rgba(154, 160, 184, 0.85);
+}
+
+/* ===== بدنه ===== */
+
+.page-body {
+  min-height: 0;
+  padding-bottom: 6px;
+  overflow: hidden;
+}
+
+.glass-table-wrapper {
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background:
+    radial-gradient(circle at 0 0, rgba(255, 228, 138, 0.08), transparent 60%),
+    radial-gradient(circle at 100% 100%, rgba(130, 85, 255, 0.12), transparent 60%),
+    linear-gradient(135deg, rgba(5, 5, 24, 0.96), rgba(5, 6, 32, 0.98));
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.96);
+  padding: 10px 10px 8px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.table-responsive {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* states */
+
+.state {
+  padding: 16px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  margin: 4px;
+}
+
+.state-loading {
+  background: rgba(15, 23, 42, 0.9);
+}
+
+.state-error {
+  background: rgba(127, 29, 29, 0.9);
+  color: #fecaca;
+}
+
+.state-error i {
+  color: #fee2e2;
+}
+
+.state-empty {
+  background: rgba(30, 64, 175, 0.9);
+  color: #dbeafe;
+}
+
+/* جدول */
+
+.patchnotes-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  color: #e5e7ff;
+}
+
+.patchnotes-table thead tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.patchnotes-table thead th {
+  border: none;
+  font-weight: 600;
+  color: rgba(156, 163, 195, 0.9);
+  padding: 6px 8px;
+  white-space: nowrap;
+}
+
+.patchnotes-table tbody tr {
+  border-bottom: 1px solid rgba(15, 23, 42, 0.9);
+  transition: background 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+}
+
+.patchnotes-table tbody tr:hover {
+  background: radial-gradient(circle at 0 0, rgba(255, 228, 138, 0.12), transparent 70%);
+}
+
+.patchnotes-table tbody td {
+  border: none;
+  padding: 7px 8px;
+  vertical-align: middle;
+}
+
+/* accent برای ردیف‌ها */
+
+.row-latest {
+  background: radial-gradient(circle at 0 0, rgba(255, 228, 138, 0.10), transparent 70%);
+}
+
+.row-bugfix {
+  background: radial-gradient(circle at 0 0, rgba(248, 113, 113, 0.08), transparent 70%);
+}
+
+.row-new {
+  background: radial-gradient(circle at 0 0, rgba(110, 231, 183, 0.08), transparent 70%);
+}
+
+/* سلول‌ها */
+
+.col-version .mono {
+  font-family: monospace;
+  font-size: 0.86rem;
+  color:#F1C40F ;
+}
+
+.title-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.title-cell .title {
+  font-weight: 600;
+}
+
+.title-cell .subtitle {
+  font-size: 0.76rem;
+  color: rgba(156, 163, 195, 0.9);
+}
+
+.status-pill {
+  font-size: 0.74rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  background: rgba(15, 23, 42, 0.95);
+}
+
+.status-new {
+  border-color: rgba(74, 222, 128, 0.7);
+  background: rgba(22, 101, 52, 0.9);
+  color: #bbf7d0;
+}
+
+.status-improvement {
+  border-color: rgba(59, 130, 246, 0.7);
+  background: rgba(30, 64, 175, 0.9);
+  color: #bfdbfe;
+}
+
+.status-bugfix {
+  border-color: rgba(248, 113, 113, 0.7);
+  background: rgba(127, 29, 29, 0.9);
+  color: #fecaca;
+}
+
+.status-announcement {
+  border-color: rgba(251, 191, 36, 0.7);
+  background: rgba(161, 98, 7, 0.9);
+  color: #fef3c7;
+}
+
+.date-chip {
+  font-size: 0.78rem;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.6);
+}
+
+.latest-chip {
+  font-size: 0.76rem;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: rgba(255, 228, 138, 0.15);
+  border: 1px solid rgba(250, 204, 21, 0.9);
+  color: #fef9c3;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.latest-chip i {
+  font-size: 0.85rem;
+}
+
+.btn-row {
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  background: rgba(15, 23, 42, 0.98);
+  color: #e5e7ff;
+  font-size: 0.78rem;
+  padding: 3px 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.btn-row i {
+  font-size: 0.9rem;
+}
+
+/* pagination */
+
+.pagination-shell {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.pager-btn {
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: rgba(15, 23, 42, 0.98);
+  color: #e5e7ff;
+  font-size: 0.78rem;
+  padding: 3px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.pager-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.pager-info {
+  font-size: 0.78rem;
+  color: rgba(209, 213, 219, 0.95);
+}
+
+@media (max-width: 767.98px) {
+  .page-header-main {
+    align-items: flex-start;
+  }
+  .page-header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+table.patchnotes-table {
+  background: transparent !important;
+}
+
+table.patchnotes-table thead,
+table.patchnotes-table tbody,
+table.patchnotes-table tr,
+table.patchnotes-table td,
+table.patchnotes-table th {
+  background: transparent !important;
+}
+
+/* وقتی hover می‌کنی، فقط افکت خودت اعمال بشه */
+.patchnotes-table tbody tr:hover {
+  background: radial-gradient(circle at 0 0, rgba(255, 228, 138, 0.12), transparent 70%) !important;
+}

@@ -1,0 +1,373 @@
+<div class="content-shell" [formGroup]="form">
+  <!-- هدر صفحه -->
+  <section class="page-header glass-surface">
+    <div class="page-header-main d-flex flex-wrap align-items-center justify-content-between gap-2">
+      <div class="page-title-block">
+        <span class="page-kicker">PATCH NOTES CONSOLE</span>
+
+        <h1 class="page-title">
+          <span class="highlight">
+            {{ isCreateMode() ? 'ایجاد نسخه جدید' : 'مدیریت نسخه' }}
+          </span>
+
+          <span class="sub" *ngIf="isCreateMode()">
+            ثبت یک آپدیت جدید برای کاربران MyApp
+          </span>
+
+          <span class="sub" *ngIf="!isCreateMode()">
+            ویرایش و مدیریت نسخه منتشر شده
+            <span class="mono" *ngIf="patchNote() || form.get('version')?.value">
+              (v{{ form.get('version')?.value || patchNote()?.version }})
+            </span>
+          </span>
+        </h1>
+      </div>
+
+      <div class="page-header-actions d-flex flex-wrap align-items-center justify-content-end gap-2">
+        <button type="button" class="btn-ghost" (click)="backToList()">
+          <i class="bi bi-arrow-right"></i>
+          بازگشت به فهرست
+        </button>
+
+        <button
+          type="button"
+          class="btn-ghost danger"
+          *ngIf="!isCreateMode()"
+          [disabled]="isSaving() || isLoading()"
+          (click)="delete()"
+        >
+          <i class="bi bi-trash3"></i>
+          حذف نسخه
+        </button>
+
+        <button
+          type="button"
+          class="btn-ghost"
+          *ngIf="!isCreateMode()"
+          [disabled]="isSaving() || isLoading()"
+          (click)="markAsLatest()"
+        >
+          <i class="bi bi-stars"></i>
+          علامت‌گذاری به عنوان آخرین نسخه
+        </button>
+
+        <button
+          type="button"
+          class="btn-primary"
+          [disabled]="isSaving() || isLoading() || form.invalid"
+          (click)="submit()"
+        >
+          <i class="bi bi-check-lg"></i>
+          {{ isCreateMode() ? 'ایجاد نسخه' : 'ذخیره تغییرات' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- استیت‌های بالای صفحه -->
+    <div class="page-header-filters">
+      <div class="state state-loading" *ngIf="isLoading()">
+        <div class="spinner-border spinner-border-sm" role="status"></div>
+        <span>در حال بارگذاری اطلاعات نسخه...</span>
+      </div>
+
+      <div class="state state-error" *ngIf="!isLoading() && error()">
+        <i class="bi bi-exclamation-triangle"></i>
+        <span>{{ error() }}</span>
+      </div>
+
+      <div class="state state-success" *ngIf="!isLoading() && saveMessage()">
+        <i class="bi bi-check-circle"></i>
+        <span>{{ saveMessage() }}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- بدنه صفحه -->
+  <section class="page-body">
+    <div class="details-grid glass-table-wrapper row g-2">
+      <!-- ستون فرم -->
+      <div class="details-main col-12 col-lg-7">
+        <form class="details-form" (ngSubmit)="submit()">
+          <!-- ردیف ۱: نسخه + وضعیت + تاریخ -->
+          <div class="form-row">
+            <div class="field">
+              <label>شماره نسخه <span class="req">*</span></label>
+              <input
+                type="text"
+                class="form-control-sm"
+                formControlName="version"
+                placeholder="مثال: 1.0.0"
+                [class.is-invalid]="form.get('version')?.invalid && form.get('version')?.touched"
+              />
+              <div class="hint">
+                فقط عدد و نقطه (Semantic Versioning)
+              </div>
+            </div>
+
+            <div class="field">
+              <label>وضعیت نسخه <span class="req">*</span></label>
+              <div class="pill-select">
+                <button
+                  type="button"
+                  *ngFor="let s of statusOptions"
+                  [class.is-active]="form.get('status')?.value === s.value"
+                  (click)="form.get('status')?.setValue(s.value)"
+                >
+                  {{ s.label }}
+                </button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>تاریخ انتشار <span class="req">*</span></label>
+              <input
+                type="date"
+                class="form-control-sm"
+                formControlName="date"
+                [class.is-invalid]="form.get('date')?.invalid && form.get('date')?.touched"
+              />
+            </div>
+          </div>
+
+          <!-- ردیف ۲: عنوان و زیرعنوان -->
+          <div class="form-row">
+            <div class="field full">
+              <label>عنوان نسخه <span class="req">*</span></label>
+              <input
+                type="text"
+                class="form-control-sm"
+                formControlName="title"
+                placeholder="مثال: قرار گرفتن اپ در دسترس عمومی"
+                [class.is-invalid]="form.get('title')?.invalid && form.get('title')?.touched"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field full">
+              <label>زیرعنوان / خلاصه کوتاه</label>
+              <input
+                type="text"
+                class="form-control-sm"
+                formControlName="subtitle"
+                placeholder="چند کلمه درباره مهم‌ترین تغییر"
+              />
+            </div>
+          </div>
+
+          <!-- ردیف ۳: توضیحات آزاد -->
+          <div class="form-row">
+            <div class="field full">
+              <label>توضیحات کلی نسخه</label>
+              <textarea
+                rows="5"
+                class="form-control-sm textarea"
+                formControlName="description"
+                placeholder="توضیح مختصر در مورد اینکه این نسخه چه چیزی را برای کاربران به ارمغان می‌آورد..."
+              ></textarea>
+              <div class="hint">
+                این متن در برخی بخش‌ها برای سئوی داخلی و راهنمایی تیم استفاده می‌شود؛
+                برای متن نهایی کاربر، می‌توانی در آیتم‌های جزئی‌تر هم استفاده کنی.
+              </div>
+            </div>
+          </div>
+
+          <!-- ردیف ۴: آخرین نسخه -->
+          <div class="form-row">
+            <div class="field">
+              <label>برچسب آخرین نسخه</label>
+              <div class="toggle-line">
+                <label class="toggle">
+                  <input type="checkbox" formControlName="is_latest" />
+                  <span class="slider"></span>
+                </label>
+                <span class="toggle-label">
+                  این نسخه به عنوان <strong>آخرین نسخه در سایت</strong> نمایش داده شود.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- دکمه‌های پایین فرم (برای موبایل / اسکرول طولانی) -->
+          <div class="form-actions-bottom">
+            <button
+              type="button"
+              class="btn-ghost"
+              (click)="backToList()"
+            >
+              بازگشت
+            </button>
+
+            <button
+              type="submit"
+              class="btn-primary"
+              [disabled]="isSaving() || isLoading() || form.invalid"
+            >
+              <i class="bi bi-check-lg"></i>
+              {{ isCreateMode() ? 'ایجاد نسخه' : 'ذخیره تغییرات' }}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ستون پیش‌نمایش + آیتم‌ها -->
+      <aside class="details-preview col-12 col-lg-5">
+        <!-- پیش‌نمایش کلی نسخه -->
+        <div class="preview-header">
+          <span class="preview-kicker">پیش‌نمایش نمایش عمومی</span>
+          <div class="preview-version-chip" *ngIf="form.get('version')?.value">
+            v{{ form.get('version')?.value }}
+          </div>
+        </div>
+
+        <div class="timeline-card glass-card">
+          <div class="timeline-header">
+            <span class="version-badge">
+              v{{ form.get('version')?.value || 'x.y.z' }}
+            </span>
+
+            <span class="date">
+              {{ form.get('date')?.value || '____/__/__' }}
+            </span>
+
+            <span
+              class="status-pill"
+              [ngClass]="statusPillClass(form.get('status')?.value || 'new')"
+            >
+              {{ statusLabel(form.get('status')?.value || 'new') }}
+            </span>
+          </div>
+
+          <h3 class="update-title">
+            {{ form.get('title')?.value || 'عنوان نسخه برای کاربران' }}
+          </h3>
+
+          <p class="update-desc" *ngIf="form.get('subtitle')?.value">
+            {{ form.get('subtitle')?.value }}
+          </p>
+
+          <p class="update-desc muted" *ngIf="form.get('description')?.value">
+            {{ form.get('description')?.value }}
+          </p>
+
+          <p class="update-desc muted" *ngIf="!form.get('description')?.value">
+            اینجا متن توضیحات نسخه برای کاربران نمایش داده می‌شود. با پر کردن فیلدهای بالا،
+            پیش‌نمایش به‌صورت زنده آپدیت می‌شود.
+          </p>
+
+          <div class="preview-latest-badge" *ngIf="form.get('is_latest')?.value">
+            <i class="bi bi-stars"></i>
+            این نسخه به‌عنوان آخرین نسخه به کاربران نمایش داده خواهد شد.
+          </div>
+        </div>
+
+        <!-- مدیریت آیتم‌های این نسخه -->
+        <div class="items-card" *ngIf="!isCreateMode()">
+          <div class="items-header">
+            <div class="items-header-text">
+              <span class="items-title">آیتم‌های این نسخه</span>
+              <span class="items-sub">
+                بولت‌هایی که در لندینگ / مودال به کاربر نشان داده می‌شوند.
+              </span>
+            </div>
+            <span class="items-count" *ngIf="orderedItems().length">
+              {{ orderedItems().length }} آیتم
+            </span>
+          </div>
+
+          <!-- استیت آیتم‌ها -->
+          <div class="items-state" *ngIf="itemsLoading()">
+            <div class="spinner-border spinner-border-sm" role="status"></div>
+            <span>در حال بارگذاری آیتم‌ها...</span>
+          </div>
+
+          <div class="items-state items-error" *ngIf="itemsError() && !itemsLoading()">
+            <i class="bi bi-exclamation-triangle"></i>
+            <span>{{ itemsError() }}</span>
+          </div>
+
+          <!-- لیست آیتم‌ها -->
+          <ul class="update-list" *ngIf="!itemsLoading() && orderedItems().length">
+            <li *ngFor="let item of orderedItems()">
+              <span [ngClass]="iconClass(item)">
+                <i [class]="iconName(item)"></i>
+              </span>
+
+              <span class="update-text">
+                {{ item.text }}
+              </span>
+
+              <button
+                type="button"
+                class="item-delete"
+                (click)="deleteItem(item)"
+                [disabled]="itemsLoading() || isSaving()"
+              >
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </li>
+          </ul>
+
+          <!-- خالی بودن آیتم‌ها -->
+          <div
+            class="empty-items"
+            *ngIf="!itemsLoading() && !orderedItems().length"
+          >
+            <i class="bi bi-list-check"></i>
+            <span>هنوز آیتمی برای این نسخه ثبت نشده است.</span>
+          </div>
+
+          <!-- فرم افزودن آیتم جدید -->
+          <form
+            class="new-item-form"
+            [formGroup]="newItemForm"
+            (ngSubmit)="addItem()"
+          >
+            <div class="new-item-row">
+              <select
+                class="new-item-icon"
+                formControlName="icon_type"
+              >
+                <option value="check">تیک</option>
+                <option value="flash">سرعت / مهم</option>
+                <option value="star">ویژگی ویژه</option>
+                <option value="info">اطلاع‌رسانی</option>
+                <option value="bug">رفع باگ</option>
+              </select>
+
+              <input
+                type="text"
+                class="new-item-text"
+                formControlName="text"
+                placeholder="متن آیتم (حداکثر ۴۰۰ کاراکتر)..."
+                [class.is-invalid]="newItemForm.get('text')?.invalid && newItemForm.get('text')?.touched"
+              />
+
+              <button
+                type="submit"
+                class="btn-primary btn-small"
+                [disabled]="newItemForm.invalid || itemsLoading() || isSaving()"
+              >
+                <i class="bi bi-plus-lg"></i>
+                افزودن
+              </button>
+            </div>
+
+            <div
+              class="field-error"
+              *ngIf="newItemForm.get('text')?.invalid && newItemForm.get('text')?.touched"
+            >
+              متن آیتم الزامی است و حداکثر می‌تواند ۴۰۰ کاراکتر باشد.
+            </div>
+          </form>
+        </div>
+
+        <!-- پیام وقتی هنوز نسخه ساخته نشده -->
+        <div class="items-disabled-hint" *ngIf="isCreateMode()">
+          <i class="bi bi-info-circle"></i>
+          برای مدیریت آیتم‌های جزئیات، ابتدا نسخه را ایجاد کن.
+        </div>
+      </aside>
+    </div>
+  </section>
+</div>

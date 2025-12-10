@@ -1,0 +1,204 @@
+<div class="content-shell">
+  <!-- ردیف کارت‌های خلاصه -->
+  <div class="summary-row mb-2">
+    <div class="summary-card">
+      <div class="summary-topline">
+        <span class="label">رویدادهای امروز</span>
+        <span class="badge">۲۴ ساعت اخیر</span>
+      </div>
+      <div class="summary-main">
+        <span class="value">۱٬۲۸۴</span>
+        <span class="trend trend-up">
+          <i class="bi bi-arrow-up-right"></i>
+          ۱۲٪ نسبت به دیروز
+        </span>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-topline">
+        <span class="label">هشدارهای امنیتی</span>
+        <span class="badge">Critical</span>
+      </div>
+      <div class="summary-main">
+        <span class="value">۷</span>
+        <span class="trend trend-down">
+          <i class="bi bi-arrow-down-right"></i>
+          -۳ مورد در ۱ ساعت
+        </span>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-topline">
+        <span class="label">ورود موفق مدیران</span>
+        <span class="badge">Session</span>
+      </div>
+      <div class="summary-main">
+        <span class="value">۳۲</span>
+        <span class="trend trend-up">
+          <i class="bi bi-arrow-up-right"></i>
+          ۸٪ رشد
+        </span>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-topline">
+        <span class="label">خطاهای سیستم</span>
+        <span class="badge">Error</span>
+      </div>
+      <div class="summary-main">
+        <span class="value">۵</span>
+        <span class="trend trend-up">
+          <i class="bi bi-activity"></i>
+          پایدار
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- پنل لاگ رویدادها -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title-block">
+        <div class="panel-title">
+          <i class="bi bi-terminal-split"></i>
+          <span>لاگ رویدادها</span>
+        </div>
+        <div class="panel-subtitle">
+          نمای زنده از اتفاقات پنل ادمین: ورودها، تغییر نقش‌ها، تنظیمات حساس و خطاها.
+        </div>
+      </div>
+
+      <div class="panel-actions">
+        <!-- دکمه فیلتر سطح لاگ -->
+        <button type="button" class="pill-filter" (click)="cycleLevel()">
+          <span class="dot"></span>
+          <span>سطح:</span>
+          <strong>
+            {{
+              levelFilter() === 'all'
+                ? 'همه سطوح'
+                : levelFilter() === 'info'
+                ? 'Info'
+                : levelFilter() === 'warn'
+                ? 'Warn'
+                : 'Error'
+            }}
+          </strong>
+        </button>
+
+        <!-- فقط رویدادهای حساس (warn + error) -->
+        <button
+          type="button"
+          class="pill-filter secondary"
+          [class.is-active]="criticalOnly()"
+          (click)="toggleCritical()"
+        >
+          <span class="dot"></span>
+          <span>فقط رویدادهای حساس</span>
+        </button>
+
+        <!-- رفرش -->
+        <button
+          type="button"
+          class="btn-quiet"
+          (click)="onRefresh()"
+        >
+          <i class="bi bi-arrow-clockwise"></i>
+          به‌روزرسانی
+        </button>
+      </div>
+    </div>
+
+    <div class="log-table-shell">
+      <!-- هد جدول -->
+      <div class="log-table-header">
+        <div class="log-header-cell">زمان</div>
+        <div class="log-header-cell">سطح</div>
+        <div class="log-header-cell">رویداد</div>
+        <div class="log-header-cell">کاربر / ماژول</div>
+        <div class="log-header-cell log-col-ip">IP / منبع</div>
+      </div>
+
+      <!-- بدنه لاگ‌ها -->
+      <div class="log-rows">
+        <!-- لودینگ -->
+        <div class="log-row" *ngIf="loading()">
+          <div class="log-col-message">
+            در حال بارگذاری لاگ‌ها...
+          </div>
+        </div>
+
+        <!-- خطا -->
+        <div class="log-row" *ngIf="!loading() && error()">
+          <div class="log-col-message">
+            {{ error() }}
+          </div>
+        </div>
+
+        <!-- وقتی لاگی نیست -->
+        <div
+          class="log-row"
+          *ngIf="!loading() && !error() && logs().length === 0"
+        >
+          <div class="log-col-message">
+            هیچ رویدادی یافت نشد.
+          </div>
+        </div>
+
+        <!-- ردیف‌های واقعی از بک‌اند -->
+        <div
+          class="log-row"
+          *ngFor="let log of logs()"
+        >
+          <!-- زمان -->
+          <div class="log-col-time">
+            {{ log.created_at | date: 'HH:mm:ss' }}
+          </div>
+
+          <!-- سطح -->
+          <div class="log-col-level">
+            <span [ngClass]="getLevelClass(log.level)">
+              <span class="dot"></span>
+              {{ getLevelLabel(log.level) }}
+            </span>
+          </div>
+
+          <!-- پیام -->
+          <div class="log-col-message">
+            {{ log.message }}
+          </div>
+
+          <!-- اطلاعات کاربر / ماژول -->
+          <div class="log-col-meta">
+            <div class="log-meta-top">
+              <span class="log-meta-user">
+                <i class="bi" [ngClass]="getUserIcon(log)"></i>
+                {{ getUserLabel(log) }}
+              </span>
+
+              <span class="log-meta-tag" *ngIf="log.module">
+                {{ log.module }}
+              </span>
+            </div>
+
+            <span *ngIf="log.extra && (log.extra.note || log.extra.description)">
+              {{ log.extra.note || log.extra.description }}
+            </span>
+
+            <span *ngIf="!(log.extra && (log.extra.note || log.extra.description))">
+              رویداد سطح {{ getLevelLabel(log.level) }} در سامانه ثبت شده است.
+            </span>
+          </div>
+
+          <!-- IP / منبع -->
+          <div class="log-col-ip">
+            IP: {{ log.ip_address || 'نامشخص' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,164 @@
+<main class="nt-page" dir="rtl">
+  <div class="container py-4 py-md-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-9">
+
+        <!-- هدر باکسی -->
+        <header class="nt-header mb-3">
+          <div class="d-flex flex-column flex-md-row gap-3 align-items-start align-items-md-center justify-content-between">
+            <div class="d-flex gap-2 align-items-start">
+              <button type="button" class="btn btn-sm nt-back-btn" (click)="goBack()">
+                <i class="bi bi-arrow-right ms-1"></i>
+                برگشت
+              </button>
+
+              <div>
+                <div class="nt-kicker mb-1">پشتیبانی · تیکت جدید</div>
+                <h1 class="h4 fw-bold mb-1 text-light">یک تیکت جدید ثبت کن</h1>
+                <p class="mb-0 small text-light opacity-75">
+                  مشکل، سوال یا پیشنهادت را بنویس تا تیم پشتیبانی بتواند دقیق و سریع بررسی کند.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-2 mt-md-0">
+              <div class="nt-pill d-inline-flex align-items-center gap-2">
+                <span class="nt-pill-dot"></span>
+                <span class="small">میانگین پاسخ‌گویی کمتر از ۳۰ دقیقه</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- کارت فرم -->
+        <section class="card nt-card border-0 shadow-lg">
+          <div class="card-body">
+
+            <!-- پیام موفقیت -->
+            <div *ngIf="success" class="alert nt-success-alert d-flex align-items-center gap-2 mb-3">
+              <i class="bi bi-check2-circle fs-5"></i>
+              <div>
+                <p class="mb-0 small fw-semibold">تیکت شما با موفقیت ثبت شد.</p>
+                <small class="opacity-75">به‌زودی یکی از اعضای تیم پشتیبانی پاسخ می‌دهد.</small>
+              </div>
+            </div>
+
+            <!-- خطای سرور -->
+            <div *ngIf="serverError" class="alert alert-danger py-2 mb-3 small">
+              {{ serverError }}
+            </div>
+
+            <form #ticketForm="ngForm" (ngSubmit)="onSubmit(ticketForm)" novalidate>
+
+              <!-- عنوان -->
+              <div class="mb-3">
+                <label for="subject" class="form-label small mb-1 text-light">
+                  عنوان تیکت <span class="text-warning">*</span>
+                </label>
+                <input
+                  id="subject"
+                  name="subject"
+                  type="text"
+                  class="form-control nt-control"
+                  [(ngModel)]="form.subject"
+                  required
+                  minlength="5"
+                  placeholder="مثلاً: مشکل در فعال شدن اشتراک بعد از پرداخت"
+                />
+                <div class="form-text small text-secondary">
+                  عنوان را کوتاه و شفاف بنویس.
+                </div>
+              </div>
+
+              <!-- دسته + اولویت -->
+              <div class="row g-3 mb-3">
+                <div class="col-12 col-md-7">
+                  <label class="form-label small mb-1 text-light">
+                    دسته‌بندی (اختیاری)
+                  </label>
+                  <div class="d-flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      class="btn btn-sm nt-chip"
+                      *ngFor="let c of categories"
+                      [class.active]="isCategoryActive(c)"
+                      (click)="selectCategory(c)"
+                    >
+                      {{ c }}
+                    </button>
+                  </div>
+                  <div class="form-text small text-secondary mt-1">
+                    اگر گزینه مناسب نبود، می‌تونی خالی بگذاری.
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-5">
+                  <label class="form-label small mb-1 text-light">
+                    اولویت تیکت <span class="text-warning">*</span>
+                  </label>
+                  <div class="d-flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      class="btn btn-sm flex-fill nt-priority-chip"
+                      *ngFor="let p of priorities"
+                      [class.active]="isPriorityActive(p.value)"
+                      (click)="selectPriority(p.value)"
+                    >
+                      {{ p.label }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- متن پیام -->
+              <div class="mb-3">
+                <label for="body" class="form-label small mb-1 text-light">
+                  متن پیام <span class="text-warning">*</span>
+                </label>
+                <textarea
+                  id="body"
+                  name="body"
+                  rows="6"
+                  class="form-control nt-control"
+                  [(ngModel)]="form.body"
+                  required
+                  minlength="10"
+                  placeholder="شرح مشکل، زمان رخ دادن، پیام خطا یا جزئیات پرداخت را اینجا بنویس."
+                ></textarea>
+                <div class="d-flex justify-content-between mt-1">
+                  <small class="text-secondary">حداقل ۱۰ کاراکتر</small>
+                </div>
+              </div>
+
+              <!-- اکشن‌ها -->
+              <div
+                class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center gap-2 mt-3 pt-2 border-top border-secondary-subtle">
+
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary nt-ghost-btn"
+                  (click)="goBack()"
+                  [disabled]="submitting"
+                >
+                  لغو و برگشت
+                </button>
+
+                <button
+                  type="submit"
+                  class="btn nt-primary-btn d-inline-flex align-items-center justify-content-center"
+                  [disabled]="!isValid || submitting"
+                >
+                  <span class="ms-2" *ngIf="!submitting">ثبت تیکت</span>
+                  <span class="ms-2" *ngIf="submitting">در حال ارسال…</span>
+                  <i class="bi bi-send-fill"></i>
+                </button>
+
+              </div>
+            </form>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</main>

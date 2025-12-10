@@ -1,0 +1,147 @@
+/* بخش کلی */
+.cta-section {
+  padding: 80px 0;
+}
+
+.cta-box {
+  padding: 4rem 3rem;
+  border-radius: 25px;
+  max-width: 950px;
+  margin: auto;
+}
+
+.cta-title {
+  text-align: center;
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, #ffe38e, #d08bff);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.cta-subtitle {
+  text-align: center;
+  color: var(--color-text-secondary);
+  max-width: 700px;
+  margin: 0 auto 3rem auto;
+}
+
+/* دکمه CTA - ساختار کلی */
+.cta-btn {
+  display: flex;
+  flex-direction: row-reverse; /* آیکون چپ / متن راست */
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-align: right;
+
+  color: var(--color-text-light);
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 2px solid transparent;
+
+  position: relative;
+  overflow: hidden;
+  transition: 0.3s ease;
+
+  text-shadow: 0 0 5px rgba(0, 0, 0, .5);
+}
+
+/* آیکون‌ها */
+.cta-icon {
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #fff;
+  margin-left: 0;
+  margin-right: 1rem;
+  opacity: 0.9;
+  transition: 0.3s ease;
+}
+
+.cta-btn:hover .cta-icon {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* متن دکمه */
+.cta-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* راست چین */
+}
+
+.cta-main {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+/* دکمه‌های خاص */
+.cta-google {
+  border-color: #ffe27a;
+  background: linear-gradient(135deg, rgba(255, 230, 150, 0.18), rgba(180, 150, 0, 0.18));
+  box-shadow: 0 0 25px rgba(255, 220, 120, 0.35);
+}
+
+.cta-apple {
+  border-color: #d09bff;
+  background: linear-gradient(135deg, rgba(200, 150, 255, 0.18), rgba(120, 0, 255, 0.18));
+  box-shadow: 0 0 25px rgba(180, 120, 255, 0.35);
+}
+
+.cta-direct {
+  border-color: #ff9dfc;
+  background: linear-gradient(135deg, rgba(255, 160, 255, 0.18), rgba(140, 0, 255, 0.18));
+  box-shadow: 0 0 25px rgba(200, 80, 255, 0.35);
+}
+
+/* افکت هالیت */
+.cta-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 120%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: .5s;
+}
+
+.cta-btn:hover::before {
+  left: 120%;
+}
+
+.cta-btn:hover {
+  transform: translateY(-5px) scale(1.04);
+}
+
+/* QR */
+.cta-qr-text {
+  color: var(--color-text-secondary);
+  margin-bottom: 1rem;
+}
+
+.cta-qr-box {
+  width: 190px;
+  height: 190px;
+  margin: auto;
+  padding: 1rem;
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+}

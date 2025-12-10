@@ -1,0 +1,575 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+/* ------------------------------------
+   صفحه شِل
+------------------------------------ */
+.content-shell {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 10px;
+  min-height: 0;
+}
+
+/* ------------------------------------
+   هدر صفحه
+------------------------------------ */
+.page-header {
+  border-radius: 20px;
+  padding: 14px 16px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background:
+    radial-gradient(circle at 0 0, rgba(255, 228, 138, 0.14), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(130, 85, 255, 0.18), transparent 60%),
+    linear-gradient(145deg, rgba(4, 5, 20, 0.96), rgba(8, 5, 32, 0.98));
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.96);
+}
+
+.page-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.page-kicker {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(156, 163, 195, 0.9);
+}
+
+.page-title .highlight {
+  font-size: 1.15rem;
+  font-weight: 800;
+  background: linear-gradient(120deg, #ffe48a, #ff7ad9, #b7a1ff);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.page-title .sub {
+  font-size: 0.8rem;
+  color: rgba(154, 160, 184, 0.95);
+}
+
+.page-title .mono {
+  font-family: monospace;
+}
+
+/* ------------------------------------
+   دکمه‌ها
+------------------------------------ */
+.btn-primary,
+.btn-ghost {
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.18s ease-out, box-shadow 0.18s ease-out, transform 0.12s ease-out;
+}
+
+/* دکمه اصلی – شاین‌دار */
+.btn-primary {
+  background: linear-gradient(135deg, #ffe48a, #ff7ad9);
+  color: #09051a;
+  box-shadow:
+    0 0 10px rgba(255, 228, 138, 0.65),
+    0 0 18px rgba(130, 85, 255, 0.6);
+}
+
+.btn-primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 16px rgba(255, 228, 138, 0.9),
+    0 0 26px rgba(130, 85, 255, 0.9);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+  filter: brightness(0.98);
+  box-shadow:
+    0 0 8px rgba(255, 228, 138, 0.7),
+    0 0 18px rgba(130, 85, 255, 0.7);
+}
+
+/* دکمه گوست */
+.btn-ghost {
+  background: rgba(7, 8, 35, 0.96);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: rgba(228, 230, 255, 0.9);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  border-color: rgba(255, 228, 138, 0.9);
+  box-shadow: 0 0 12px rgba(255, 228, 138, 0.5);
+}
+
+.btn-ghost:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 0 6px rgba(255, 228, 138, 0.3);
+}
+
+/* گوست خطر */
+.btn-ghost.danger {
+  border-color: rgba(248, 113, 113, 0.7);
+  color: #fecaca;
+  background: rgba(127, 29, 29, 0.3);
+}
+
+.btn-ghost.danger:hover:not(:disabled) {
+  box-shadow: 0 0 12px rgba(248, 113, 113, 0.7);
+}
+
+/* حالت دیسبل */
+.btn-primary:disabled,
+.btn-ghost:disabled {
+  opacity: 0.6;
+  cursor: default;
+  filter: none;
+  transform: none;
+  box-shadow: none;
+}
+
+/* کوچک‌تر برای دکمه افزودن آیتم */
+.btn-small {
+  padding: 4px 10px;
+  font-size: 0.76rem;
+}
+
+/* ------------------------------------
+   استیت‌های بالای صفحه
+------------------------------------ */
+.page-header-filters {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.state {
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.state-loading {
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7ff;
+}
+
+.state-error {
+  background: rgba(127, 29, 29, 0.9);
+  color: #fecaca;
+}
+
+.state-success {
+  background: rgba(21, 128, 61, 0.9);
+  color: #bbf7d0;
+}
+
+/* ------------------------------------
+   بدنه صفحه
+------------------------------------ */
+.page-body {
+  min-height: 0;
+  padding-bottom: 6px;
+}
+
+.glass-table-wrapper {
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background:
+    radial-gradient(circle at 0 0, rgba(255, 228, 138, 0.08), transparent 60%),
+    radial-gradient(circle at 100% 100%, rgba(130, 85, 255, 0.12), transparent 60%),
+    linear-gradient(135deg, rgba(5, 5, 24, 0.96), rgba(5, 6, 32, 0.98));
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.96);
+  padding: 10px 10px 8px;
+}
+
+/* ------------------------------------
+   فرم
+------------------------------------ */
+.details-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.field {
+  flex: 1;
+  min-width: 0;
+}
+
+.field.full {
+  flex-basis: 100%;
+}
+
+.field label {
+  display: block;
+  font-size: 0.76rem;
+  margin-bottom: 3px;
+  color: rgba(209, 213, 219, 0.95);
+}
+
+.form-control-sm,
+.field input,
+.field textarea {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  background: rgba(15, 23, 42, 0.98);
+  color: #e5e7ff;
+  font-size: 0.8rem;
+  padding: 6px 8px;
+}
+
+textarea.textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.is-invalid {
+  border-color: rgba(248, 113, 113, 0.9) !important;
+}
+
+.hint {
+  margin-top: 3px;
+  font-size: 0.72rem;
+  color: rgba(148, 163, 184, 0.9);
+}
+
+/* ------------------------------------
+   وضعیت نسخه (pill-select)
+------------------------------------ */
+.pill-select {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.pill-select button {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(8, 10, 38, 0.96);
+  color: rgba(228, 230, 255, 0.9);
+  font-size: 0.74rem;
+  padding: 3px 9px;
+  cursor: pointer;
+}
+
+.pill-select button.is-active {
+  background: linear-gradient(120deg, rgba(255, 228, 138, 0.15), rgba(130, 85, 255, 0.2));
+  border-color: rgba(255, 228, 138, 0.85);
+  color: #fff;
+}
+
+/* ------------------------------------
+   Toggle آخرین نسخه
+------------------------------------ */
+.toggle-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+}
+
+.toggle .slider {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(30, 41, 59, 0.95);
+  border-radius: 999px;
+  transition: 0.2s;
+  border: 1px solid rgba(148, 163, 184, 0.8);
+}
+
+.toggle .slider::before {
+  content: "";
+  position: absolute;
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  top: 2px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 0, #ffe48a, #ff7ad9);
+  transition: 0.2s;
+}
+
+.toggle input:checked + .slider {
+  background: rgba(22, 163, 74, 0.9);
+}
+
+.toggle input:checked + .slider::before {
+  transform: translateX(18px);
+}
+
+/* ------------------------------------
+   ستون پیش‌نمایش
+------------------------------------ */
+.details-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: rgba(156, 163, 195, 0.95);
+}
+
+.preview-version-chip {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.96);
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  font-family: monospace;
+}
+
+.timeline-card {
+  border-radius: 18px;
+  padding: 1.1rem 1.2rem 0.9rem;
+  background:
+    radial-gradient(circle at 0 0, rgba(255, 228, 138, 0.12), transparent 60%),
+    linear-gradient(135deg, rgba(6, 7, 30, 0.98), rgba(10, 10, 40, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.status-pill {
+  padding: 2px 8px;
+  font-size: 0.74rem;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+}
+
+.status-new { background: rgba(22, 101, 52, 0.9); border-color: #4ade80; }
+.status-improvement { background: rgba(30, 64, 175, 0.9); border-color: #60a5fa; }
+.status-bugfix { background: rgba(127, 29, 29, 0.9); border-color: #f87171; }
+.status-announcement { background: rgba(161, 98, 7, 0.9); border-color: #fbbf24; }
+
+/* ------------------------------------
+   کارت آیتم‌ها
+------------------------------------ */
+.items-card {
+  border-radius: 18px;
+  padding: 10px 11px 9px;
+  background:
+    radial-gradient(circle at 0 0, rgba(255, 228, 138, 0.10), transparent 60%),
+    radial-gradient(circle at 100% 100%, rgba(130, 85, 255, 0.12), transparent 60%),
+    linear-gradient(135deg, rgba(6, 7, 30, 0.98), rgba(8, 9, 40, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.update-list {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0;
+}
+
+.update-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 6px 10px;
+  border-radius: 14px;
+  transition:
+    background 0.15s ease-out,
+    box-shadow 0.15s ease-out,
+    transform 0.1s ease-out;
+}
+
+.update-list li:hover {
+  background:
+    radial-gradient(circle at 0 0, rgba(255, 228, 138, 0.08), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(130, 85, 255, 0.18), transparent 60%),
+    rgba(8, 10, 40, 0.96);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.65);
+  transform: translateY(-1px);
+}
+
+.update-text {
+  flex: 1;
+  font-size: 0.8rem;
+}
+
+.icon-circle {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-gold {
+  background: radial-gradient(circle at 30% 0, #ffeaa7, #f1c40f);
+  color: #3b2a00;
+}
+
+.icon-blue {
+  background: radial-gradient(circle at 30% 0, #a0e4ff, #00bcd4);
+  color: #002733;
+}
+
+.item-delete {
+  flex: 0 0 26px;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid rgba(248, 113, 113, 0.7);
+  background:
+    radial-gradient(circle at 30% 0, rgba(248, 113, 113, 0.28), transparent 60%),
+    rgba(15, 23, 42, 0.98);
+  color: #fecaca;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.78rem;
+  box-shadow:
+    0 0 8px rgba(248, 113, 113, 0.65),
+    0 0 14px rgba(15, 23, 42, 0.9);
+  transition:
+    background 0.15s ease-out,
+    box-shadow 0.15s ease-out,
+    transform 0.1s ease-out,
+    border-color 0.12s ease-out;
+}
+
+.item-delete i {
+  font-size: 0.8rem;
+}
+
+.item-delete:hover:not(:disabled) {
+  background:
+    linear-gradient(135deg, rgba(248, 113, 113, 0.35), rgba(248, 113, 113, 0.6));
+  border-color: rgba(254, 202, 202, 0.95);
+  box-shadow:
+    0 0 12px rgba(248, 113, 113, 0.9),
+    0 0 20px rgba(127, 29, 29, 0.9);
+  transform: translateY(-1px);
+}
+
+.item-delete:disabled {
+  opacity: 0.4;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* ------------------------------------
+   خالی بودن آیتم‌ها
+------------------------------------ */
+.empty-items {
+  padding: 5px 0;
+  font-size: 0.78rem;
+  color: rgba(148, 163, 184, 0.92);
+}
+
+/* ------------------------------------
+   فرم افزودن آیتم
+------------------------------------ */
+
+.new-item-form {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.new-item-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 0 0, rgba(255, 228, 138, 0.10), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(130, 85, 255, 0.16), transparent 60%),
+    rgba(7, 10, 40, 0.96);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.75);
+}
+
+.new-item-icon {
+  flex: 0 0 105px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.9);
+  background:
+    linear-gradient(135deg,
+      rgba(6, 8, 30, 0.98),
+      rgba(12, 10, 40, 0.98));
+  color: #e5e7ff;
+  font-size: 0.78rem;
+  padding: 4px 8px;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.new-item-icon:focus-visible {
+  border-color: rgba(255, 228, 138, 0.95);
+  box-shadow: 0 0 0 1px rgba(255, 228, 138, 0.7);
+}
+
+.new-item-icon option{
+  background-color: #002733;
+}
+
+.new-item-text {
+  flex: 1;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: rgba(15, 23, 42, 0.98);
+  padding: 5px 8px;
+  color: #e5e7ff;
+}
+
+.field-error {
+  margin-top: 3px;
+  font-size: 0.72rem;
+  color: #fecaca;
+}
+
+/* ------------------------------------
+   ریسپانسیو نهایی
+------------------------------------ */
+@media (max-width: 576px) {
+  .new-item-row {
+    flex-direction: column;
+  }
+
+  .new-item-icon,
+  .new-item-text,
+  .btn-small {
+    width: 100%;
+  }
+}

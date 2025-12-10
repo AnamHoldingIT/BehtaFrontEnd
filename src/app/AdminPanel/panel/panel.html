@@ -1,0 +1,209 @@
+<div class="container-fluid admin-layout">
+  <div class="row flex-nowrap">
+    <!-- SIDEBAR -->
+    <aside class="col-12 col-md-3 col-xl-2 sidebar d-none d-md-flex flex-column" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo-group">
+          <div class="sidebar-logo">A</div>
+          <div class="sidebar-title">
+            <span>MYAPP ADMIN</span>
+            <span>کنسول مدیریت</span>
+            <span>کنترل متمرکز سامانه</span>
+          </div>
+        </div>
+        <span class="sidebar-chip">
+          <i class="bi bi-shield-lock-fill"></i>
+          سطح: ریشه
+        </span>
+      </div>
+
+      <div class="sidebar-section-label">ناوبری</div>
+      <nav class="sidebar-nav">
+        <a routerLink="/admin-panel/log" routerLinkActive="is-active" class="sidebar-link">
+          <i class="bi bi-activity"></i>
+          <span class="label">داشبورد · لاگ رویدادها</span>
+          <span class="badge">زنده</span>
+        </a>
+
+        <a routerLink="/admin-panel/users" routerLinkActive="is-active" class="sidebar-link">
+          <i class="bi bi-people"></i>
+          <span class="label">کاربران</span>
+        </a>
+
+        <a routerLink="/admin-panel/tickets" routerLinkActive="is-active" class="sidebar-link">
+          <i class="bi bi-chat-dots"></i>
+          <span class="label">مدیریت تیکت‌ها</span>
+        </a>
+
+        
+        <a routerLink="/admin-panel/patchnotes" routerLinkActive="is-active" class="sidebar-link">
+          <i class="bi bi-newspaper"></i>
+          <span class="label">اخبار اپلیکشن </span>
+        </a>
+      </nav>
+
+      <div class="sidebar-section-label">سایر</div>
+      <nav class="sidebar-nav">
+        <a href="#" class="sidebar-link">
+          <i class="bi bi-sliders"></i>
+          <span class="label">تنظیمات (به‌زودی)</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <i class="bi bi-file-lock2"></i>
+          <span class="label">سیاست‌های امنیتی</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-footer-topline">
+          <span>محیط: Production</span>
+          <button type="button">
+            <i class="bi bi-box-arrow-right"></i>
+            خروج
+          </button>
+        </div>
+        <span class="sidebar-version">MyApp Admin Suite · v1.0.0</span>
+      </div>
+    </aside>
+
+    <!-- SIDEBAR MOBILE (offcanvas Bootstrap) -->
+    <div class="offcanvas offcanvas-end sidebar p-0" tabindex="-1" id="sidebarOffcanvas">
+      <div class="sidebar-header">
+        <div class="sidebar-logo-group">
+          <div class="sidebar-logo">A</div>
+          <div class="sidebar-title">
+            <span>MYAPP ADMIN</span>
+            <span>کنسول مدیریت</span>
+            <span>کنترل متمرکز سامانه</span>
+          </div>
+        </div>
+        <button type="button" class="btn-close btn-close-white ms-1" data-bs-dismiss="offcanvas"
+          aria-label="بستن"></button>
+      </div>
+
+      <div class="sidebar-section-label">ناوبری</div>
+      <nav class="sidebar-nav">
+        <a routerLink="/admin-panel/log" routerLinkActive="is-active" class="sidebar-link" data-bs-dismiss="offcanvas">
+          <i class="bi bi-activity"></i>
+          <span class="label">داشبورد · لاگ رویدادها</span>
+          <span class="badge">زنده</span>
+        </a>
+
+        <a routerLink="/admin-panel/users" routerLinkActive="is-active" class="sidebar-link"
+          data-bs-dismiss="offcanvas">
+          <i class="bi bi-people"></i>
+          <span class="label">کاربران</span>
+        </a>
+      </nav>
+
+
+      <div class="sidebar-section-label">سایر</div>
+      <nav class="sidebar-nav">
+        <a href="#" class="sidebar-link" data-bs-dismiss="offcanvas">
+          <i class="bi bi-sliders"></i>
+          <span class="label">تنظیمات (به‌زودی)</span>
+        </a>
+        <a href="#" class="sidebar-link" data-bs-dismiss="offcanvas">
+          <i class="bi bi-file-lock2"></i>
+          <span class="label">سیاست‌های امنیتی</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-footer-topline">
+          <span>محیط: Production</span>
+          <button type="button">
+            <i class="bi bi-box-arrow-right"></i>
+            خروج
+          </button>
+        </div>
+        <span class="sidebar-version">MyApp Admin Suite · v1.0.0</span>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <main class="col main-shell">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-button mobile-menu d-md-none" type="button" data-bs-toggle="offcanvas"
+            data-bs-target="#sidebarOffcanvas" aria-label="باز کردن منوی کناری">
+            <i class="bi bi-list"></i>
+          </button>
+          <div class="topbar-title-block">
+            <span class="topbar-kicker">ADMIN EVENT LOG</span>
+            <div class="topbar-title">
+              <span class="highlight">پنل مدیریت</span>
+            </div>
+            <span class="topbar-subtitle">
+              آخرین فعالیت‌ها، خطاها و رخدادهای امنیتی در MyApp Admin.
+            </span>
+          </div>
+          <div class="pill-env">
+            <span class="dot"></span>
+            <span>پیوند زنده به سیستم</span>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="search-shell">
+            <input type="search" id="logSearch" placeholder="جستجو در رویدادها، کاربران، IP...">
+            <i class="bi bi-search"></i>
+          </div>
+
+          <button class="icon-button" aria-label="نوتیفیکیشن‌ها">
+            <i class="bi bi-bell"></i>
+          </button>
+
+          <!-- پروفایل + منوی دراپ‌داون -->
+          <div class="topbar-user-wrapper">
+            <button class="topbar-user" id="userMenuBtn" type="button" (click)="toggleUserMenu()">
+              <div class="topbar-user-avatar">AD</div>
+              <div class="topbar-user-info">
+                <span class="name">مدیر ارشد سیستم</span>
+                <span class="role">Super Admin</span>
+              </div>
+              <i class="bi bi-chevron-down"></i>
+            </button>
+
+            <div class="user-menu" [ngClass]="{'is-open': isMenuOpen}" id="userMenu">
+              <div class="user-menu-header">
+                <div class="user-menu-avatar">AD</div>
+                <div class="user-menu-text">
+                  <span class="name">مدیر ارشد سیستم</span>
+                  <span class="email">admin@myapp.internal</span>
+                </div>
+              </div>
+
+              <button class="user-menu-item" type="button">
+                <i class="bi bi-person"></i>
+                <span>پروفایل من</span>
+              </button>
+
+              <button class="user-menu-item" type="button">
+                <i class="bi bi-gear"></i>
+                <span>تنظیمات حساب</span>
+              </button>
+
+              <button class="user-menu-item" type="button">
+                <i class="bi bi-shield-lock"></i>
+                <span>فعالیت امنیتی</span>
+              </button>
+
+              <div class="user-menu-divider"></div>
+
+              <button class="user-menu-item danger" type="button" (click)="logOut()">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>خروج از پنل مدیریت</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </header>
+
+
+      <router-outlet></router-outlet>
+
+    </main>
+  </div>
+</div>

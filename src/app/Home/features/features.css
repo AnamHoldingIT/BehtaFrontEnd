@@ -1,0 +1,138 @@
+/* ================================================= */
+/* FEATURES / ABOUT-SECTION */
+/* ================================================= */
+
+.about-section {
+  position: relative;
+  overflow: hidden;
+  padding: 100px 0;
+}
+
+.about-section::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(
+    circle,
+    rgba(140, 82, 255, 0.3),
+    transparent 70%
+  );
+  filter: blur(120px);
+  z-index: 0;
+}
+
+.about-section::after {
+  content: "";
+  position: absolute;
+  bottom: -20%;
+  left: -15%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 207, 87, 0.25),
+    transparent 70%
+  );
+  filter: blur(130px);
+  z-index: 0;
+}
+
+/* تیتر و زیرتیتر سکشن */
+
+.about-title {
+  font-size: 3rem;
+  text-align: center;
+  font-weight: 800;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-yellow),
+    var(--color-primary-purple)
+  );
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 10px rgba(241, 196, 15, 0.2);
+}
+
+.about-subtitle {
+  text-align: center;
+  opacity: 0.85;
+  font-size: 1.1rem;
+  margin-bottom: 40px;
+  color: var(--color-text-light);
+  z-index: 2;
+  position: relative;
+}
+
+/* کارت‌های امکانات */
+
+.about-card {
+  padding: 40px 28px;
+  min-height: 340px;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.about-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow:
+    0 0 40px rgba(157, 107, 255, 0.35),
+    0 0 24px rgba(255, 207, 87, 0.25);
+}
+
+.about-card i {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  background: linear-gradient(120deg, #b57bff, #ffcf57);
+  -webkit-background-clip: text;
+  color: transparent;
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+}
+
+.about-card h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #ffffff;
+}
+
+.about-card p {
+  color: #dcdcdc;
+  opacity: 0.85;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+/* ریسپانسیو سبک */
+
+@media (max-width: 991.98px) {
+  .about-section {
+    padding: 70px 0;
+  }
+
+  .about-card {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 576px) {
+  .about-title {
+    font-size: 2.3rem;
+  }
+
+  .about-subtitle {
+    font-size: 0.98rem;
+  }
+
+  .about-card {
+    padding: 28px 22px;
+  }
+}

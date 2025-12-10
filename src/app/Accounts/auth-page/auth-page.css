@@ -1,0 +1,527 @@
+:root {
+  --color-primary-purple: #8255ff;
+  --color-primary-pink: #ff7ad9;
+  --color-primary-yellow: #ffe48a;
+
+  --bg-1: #030314;
+  --bg-2: #050719;
+
+  --glass-border: rgba(255, 255, 255, 0.22);
+  --glass-shadow: 0 30px 90px rgba(0, 0, 0, 0.95);
+
+  --text-main: #f7f7ff;
+  --text-muted: #9aa0b8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Vazirmatn', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  overflow: hidden;
+  color: var(--text-main);
+  background:
+    radial-gradient(circle at 0% 0%, #281b5f 0, transparent 40%),
+    radial-gradient(circle at 100% 100%, #511242 0, transparent 40%),
+    radial-gradient(circle at 100% 0%, #1d3a5c 0, transparent 35%),
+    linear-gradient(135deg, var(--bg-1), var(--bg-2));
+  background-size: 160% 160%;
+  animation: bgDrift 30s ease-in-out infinite alternate;
+}
+
+@keyframes bgDrift {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  50% {
+    background-position: 40% 80%;
+  }
+
+  100% {
+    background-position: 100% 20%;
+  }
+}
+
+/* ذرات معلق */
+.particles {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.8;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff, transparent);
+  opacity: 0.2;
+  animation: floatUp linear infinite;
+}
+
+.particle:nth-child(1) {
+  left: 10%;
+  animation-duration: 14s;
+  animation-delay: 0s;
+}
+
+.particle:nth-child(2) {
+  left: 20%;
+  animation-duration: 18s;
+  animation-delay: 2s;
+}
+
+.particle:nth-child(3) {
+  left: 35%;
+  animation-duration: 16s;
+  animation-delay: 1s;
+}
+
+.particle:nth-child(4) {
+  left: 50%;
+  animation-duration: 20s;
+  animation-delay: 3s;
+}
+
+.particle:nth-child(5) {
+  left: 65%;
+  animation-duration: 17s;
+  animation-delay: 4s;
+}
+
+.particle:nth-child(6) {
+  left: 80%;
+  animation-duration: 19s;
+  animation-delay: 0.5s;
+}
+
+.particle:nth-child(7) {
+  left: 90%;
+  animation-duration: 21s;
+  animation-delay: 2.5s;
+}
+
+.particle:nth-child(8) {
+  left: 5%;
+  animation-duration: 23s;
+  animation-delay: 5s;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translate3d(0, 110vh, 0) scale(0.6);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 0.3;
+  }
+
+  85% {
+    opacity: 0.3;
+  }
+
+  100% {
+    transform: translate3d(0, -10vh, 0) scale(1);
+    opacity: 0;
+  }
+}
+
+/* هاله‌ها */
+.auras {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  z-index: 0;
+}
+
+.aura {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.5;
+}
+
+.aura.aura-1 {
+  background: radial-gradient(circle, #ffe48a, transparent 60%);
+  top: -140px;
+  right: -60px;
+  animation: auraPulse 16s ease-in-out infinite alternate;
+}
+
+.aura.aura-2 {
+  background: radial-gradient(circle, #9b6dff, transparent 65%);
+  bottom: -130px;
+  left: -80px;
+  animation: auraPulse 20s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes auraPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: scale(1.05);
+    opacity: 0.45;
+  }
+}
+
+/* دکمه برگشت */
+.btn-floating-home {
+  position: fixed;
+  inset-inline-start: 24px;
+  bottom: 24px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(4, 6, 20, 0.88);
+  border: 1px solid rgba(126, 93, 255, 0.8);
+  color: #fdfaf1;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.3s ease;
+  opacity : 0;
+  animation: floatBtnIn 0.8s 0.6s ease-out forwards;
+}
+
+@keyframes floatBtnIn {
+  from {
+    transform: translateY(18px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.btn-floating-home i {
+  font-size: 1rem;
+  color: var(--color-primary-yellow);
+}
+
+.btn-floating-home:hover {
+  background: rgba(13, 17, 40, 0.98);
+  border-color: var(--color-primary-yellow);
+  box-shadow: 0 20px 45px rgba(126, 93, 255, 0.7);
+  transform: translateY(-2px);
+}
+
+/* شِل اصلی – فرم وسط صفحه */
+.login-shell {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  z-index: 1;
+}
+
+.login-grid {
+  width: 100%;
+  max-width: 460px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* کارت لاگین */
+.panel-auth {
+  animation: panelFadeUp 0.8s ease-out forwards;
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+@keyframes panelFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-auth {
+  position: relative;
+  border-radius: 26px;
+  padding: 22px 20px 20px;
+  background:
+    radial-gradient(circle at 0 0, rgba(255, 228, 138, 0.12), transparent 60%),
+    radial-gradient(circle at 100% 100%, rgba(130, 85, 255, 0.28), transparent 60%),
+    linear-gradient(145deg, rgba(2, 5, 19, 0.98), rgba(10, 13, 34, 0.98));
+  border: 1px solid var(--glass-border);
+  /* box-shadow: var(--glass-shadow); */
+  backdrop-filter: blur(26px) saturate(180%);
+  -webkit-backdrop-filter: blur(26px) saturate(180%);
+  overflow: hidden;
+}
+
+.card-auth::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background:
+    conic-gradient(
+      from 180deg,
+      rgba(255, 228, 138, 0),
+      rgba(255, 228, 138, 0.8),
+      rgba(130, 85, 255, 0.9),
+      rgba(255, 122, 217, 0.9),
+      rgba(255, 228, 138, 0)
+    );
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  padding: 1px;
+  opacity: 0.5;
+  animation: borderSpin 18s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes borderSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.card-auth::after {
+  content: '';
+  position: absolute;
+  inset: -25%;
+  background:
+    radial-gradient(circle at 100% 0, rgba(255, 255, 255, 0.18), transparent 55%),
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.16),
+      transparent 50%,
+      rgba(255, 255, 255, 0.06) 70%,
+      transparent 100%
+    );
+  mix-blend-mode: screen;
+  opacity: 0.25;
+  pointer-events: none;
+  transform: translate3d(6px, -10px, 0) rotate(-4deg);
+  animation: glassSweep 22s ease-in-out infinite alternate;
+}
+
+@keyframes glassSweep {
+  0% {
+    transform: translate3d(10px, -16px, 0) rotate(-6deg);
+    opacity: 0.22;
+  }
+
+  50% {
+    transform: translate3d(-4px, 2px, 0) rotate(0deg);
+    opacity: 0.38;
+  }
+
+  100% {
+    transform: translate3d(-10px, 12px, 0) rotate(3deg);
+    opacity: 0.3;
+  }
+}
+
+.card-auth-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.card-auth-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+}
+
+.card-auth-header-main {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-mini {
+  width: 42px;
+  height: 42px;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 20% 0, #ffffff, #ffe48a 35%, #8255ff 90%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #050713;
+  font-weight: 800;
+  font-size: 1.15rem;
+  box-shadow:
+    0 0 14px rgba(255, 228, 138, 0.7),
+    0 0 26px rgba(130, 85, 255, 0.7);
+  position: relative;
+  overflow: hidden;
+}
+
+.logo-mini::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.7),
+    transparent
+  );
+  transform: translateX(-130%) skewX(-20deg);
+  animation: logoShine 7s ease-in-out infinite;
+  opacity: 0.8;
+}
+
+@keyframes logoShine {
+  0%,
+  65% {
+    transform: translateX(-130%) skewX(-20deg);
+  }
+
+  80%,
+  100% {
+    transform: translateX(130%) skewX(-20deg);
+  }
+}
+
+.card-auth-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.card-auth-header-text span:nth-child(1) {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.card-auth-header-text span:nth-child(2) {
+  font-size: 0.98rem;
+  font-weight: 700;
+}
+
+.card-auth-header-text span:nth-child(3) {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.login-title {
+  font-size: 1.18rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.login-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+/* Toast خطا */
+.global-error {
+  position: fixed;
+  inset-inline: 0;
+  top: 18px;
+  display: flex;
+  justify-content: center;
+  z-index: 40;
+  transform: translateY(-160%);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.4s cubic-bezier(0.16, 0.84, 0.44, 1),
+    opacity 0.4s ease-out;
+}
+
+.global-error-inner {
+  min-width: min(420px, calc(100% - 32px));
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(34, 7, 37, 0.96);
+  border: 1px solid rgba(255, 138, 187, 0.85);
+  color: #ffe9f5;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
+  font-size: 0.8rem;
+}
+
+.global-error-inner i {
+  font-size: 1rem;
+  color: #ff9ac4;
+}
+
+.global-error.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ریسپانسیو ریز */
+@media (max-width: 575.98px) {
+  .card-auth {
+    border-radius: 22px;
+    padding-inline: 18px;
+  }
+
+  .btn-floating-home {
+    inset-inline-start: 16px;
+    bottom: 16px;
+    padding: 7px 11px;
+    font-size: 0.76rem;
+  }
+}

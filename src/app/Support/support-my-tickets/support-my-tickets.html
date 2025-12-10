@@ -1,0 +1,232 @@
+<app-nav-bar></app-nav-bar>
+
+<main class="tickets-page">
+  <div class="tickets-shell" data-aos="fade-up" data-aos-duration="700">
+    <!-- هدر صفحه تیکت‌ها -->
+    <header class="tickets-header glass-panel">
+      <div class="tickets-header-main">
+        <span class="tickets-kicker">SUPPORT · MY TICKETS</span>
+
+        <h1 class="tickets-title">
+          تیکت‌های من
+        </h1>
+
+        <p class="tickets-subtitle">
+          همه‌ی تیکت‌هایی که تا الان ثبت کردی رو اینجا می‌بینی؛ می‌تونی
+          بر اساس وضعیت، اولویت یا جستجو روی عنوان/شناسه، فیلترشون کنی.
+        </p>
+      </div>
+
+      <div class="tickets-header-actions">
+        <button type="button" class="tickets-ghost-btn" (click)="goToSupportHub()">
+          <i class="bi bi-arrow-right"></i>
+          برگشت به مرکز پشتیبانی
+        </button>
+
+        <button type="button" class="tickets-primary-btn" (click)="goToNewTicket()">
+          <span>ثبت تیکت جدید</span>
+          <i class="bi bi-plus-circle"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- نوار ابزار فیلتر + جستجو -->
+    <section class="tickets-toolbar glass-panel">
+      <div class="tickets-search-group">
+        <div class="tickets-search-field">
+          <i class="bi bi-search"></i>
+          <input
+            type="text"
+            [ngModel]="searchTerm()"
+            (ngModelChange)="onSearchChange($event)"
+            placeholder="جستجو در عنوان تیکت یا شناسه (مثلاً #1024 یا «پرداخت»)"
+          />
+        </div>
+      </div>
+
+      <div class="tickets-filter-group">
+        <!-- فیلتر وضعیت -->
+        <div class="tickets-filter-block">
+          <span class="filter-label">وضعیت</span>
+          <div class="filter-chips">
+            <button
+              type="button"
+              class="filter-chip"
+              [class.active]="activeStatus() === 'all'"
+              (click)="setStatusFilter('all')"
+            >
+              همه
+            </button>
+            <button
+              type="button"
+              class="filter-chip"
+              [class.active]="activeStatus() === 'open'"
+              (click)="setStatusFilter('open')"
+            >
+              باز
+            </button>
+            <button
+              type="button"
+              class="filter-chip"
+              [class.active]="activeStatus() === 'pending'"
+              (click)="setStatusFilter('pending')"
+            >
+              در حال بررسی
+            </button>
+            <button
+              type="button"
+              class="filter-chip"
+              [class.active]="activeStatus() === 'answered'"
+              (click)="setStatusFilter('answered')"
+            >
+              پاسخ داده شده
+            </button>
+            <button
+              type="button"
+              class="filter-chip"
+              [class.active]="activeStatus() === 'closed'"
+              (click)="setStatusFilter('closed')"
+            >
+              بسته شده
+            </button>
+          </div>
+        </div>
+
+        <!-- فیلتر اولویت -->
+        <div class="tickets-filter-block">
+          <span class="filter-label">اولویت</span>
+          <select
+            class="filter-select"
+            [ngModel]="priorityFilter()"
+            (ngModelChange)="onPriorityChange($event)"
+          >
+            <option value="all">همه اولویت‌ها</option>
+            <option value="urgent">فوری</option>
+            <option value="high">زیاد</option>
+            <option value="normal">معمولی</option>
+            <option value="low">کم</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- لیست تیکت‌ها -->
+    <section class="tickets-list-card glass-card">
+      <!-- حالت لودینگ -->
+      <div class="tickets-loading-state" *ngIf="loading(); else listContent">
+        <div class="tickets-loading-row" *ngFor="let s of [1,2,3,4,5]">
+          <span class="loading-line short"></span>
+          <span class="loading-line long"></span>
+          <span class="loading-pill"></span>
+        </div>
+      </div>
+
+      <ng-template #listContent>
+        <!-- حالت خالی -->
+        <div
+          class="tickets-empty-state"
+          *ngIf="filteredTickets().length === 0"
+        >
+          <i class="bi bi-inbox"></i>
+          <h2>هیچ تیکتی با این فیلترها پیدا نشد</h2>
+          <p>
+            می‌تونی فیلترها رو ساده‌تر کنی، یا اگر هنوز تیکتی ثبت نکردی،
+            از دکمه «ثبت تیکت جدید» بالا استفاده کن.
+          </p>
+          <button
+            type="button"
+            class="tickets-ghost-btn"
+            (click)="resetFilters()"
+          >
+            پاک کردن فیلترها
+            <i class="bi bi-arrow-counterclockwise"></i>
+          </button>
+        </div>
+
+        <!-- لیست واقعی -->
+        <div class="tickets-table" *ngIf="filteredTickets().length > 0">
+          <!-- هدر لیست (در دسکتاپ نمایش داده می‌شود) -->
+          <div class="tickets-table-header">
+            <div class="col-title">تیکت</div>
+            <div class="col-status">وضعیت</div>
+            <div class="col-priority">اولویت</div>
+            <div class="col-updated">آخرین بروزرسانی</div>
+          </div>
+
+          <!-- ردیف‌ها -->
+          <ul class="tickets-table-body">
+            <li
+              class="tickets-row"
+              *ngFor="let ticket of filteredTickets()"
+              (click)="openTicket(ticket)"
+            >
+              <div class="col-title">
+                <div class="ticket-title-line">
+                  <span class="ticket-id">#{{ ticket.id }}</span>
+                  <span class="ticket-title">{{ ticket.subject }}</span>
+                  <span *ngIf="ticket.has_unread" class="ticket-unread-dot"></span>
+                </div>
+                <div class="ticket-subline" *ngIf="ticket.category">
+                  <span class="ticket-type">{{ ticket.category }}</span>
+                </div>
+              </div>
+
+              <div class="col-status">
+                <span [class]="getStatusClass(ticket.status)">
+                  <ng-container [ngSwitch]="ticket.status">
+                    <span *ngSwitchCase="'open'">باز</span>
+                    <span *ngSwitchCase="'pending'">در حال بررسی</span>
+                    <span *ngSwitchCase="'answered'">پاسخ داده شده</span>
+                    <span *ngSwitchCase="'closed'">بسته شده</span>
+                  </ng-container>
+                </span>
+              </div>
+
+              <div class="col-priority">
+                <span [class]="getPriorityClass(ticket.priority)">
+                  {{ getPriorityLabel(ticket.priority) }}
+                </span>
+              </div>
+
+              <div class="col-updated">
+                <span class="ticket-time">
+                  {{ ticket.updated_at | date:'yyyy/MM/dd - HH:mm' }}
+                </span>
+              </div>
+            </li>
+          </ul>
+
+          <!-- صفحه‌بندی -->
+          <footer
+            class="tickets-pagination"
+            *ngIf="totalPages() > 1"
+          >
+            <button
+              type="button"
+              class="page-btn"
+              [disabled]="currentPage() === 1"
+              (click)="goToPage(currentPage() - 1)"
+            >
+              <i class="bi bi-chevron-right"></i>
+            </button>
+
+            <span class="page-info">
+              صفحه {{ currentPage() }} از {{ totalPages() }}
+            </span>
+
+            <button
+              type="button"
+              class="page-btn"
+              [disabled]="currentPage() === totalPages()"
+              (click)="goToPage(currentPage() + 1)"
+            >
+              <i class="bi bi-chevron-left"></i>
+            </button>
+          </footer>
+        </div>
+      </ng-template>
+    </section>
+  </div>
+</main>
+
+<app-footer></app-footer>

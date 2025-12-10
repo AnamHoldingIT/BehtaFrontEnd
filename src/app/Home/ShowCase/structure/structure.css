@@ -1,0 +1,234 @@
+/* ساختار بک‌گراند بخش */
+.showcase-section {
+  padding: 80px 0;
+}
+
+/* عنوان */
+.showcase-title {
+  font-size: 2.6rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #d08bff, #ffe38e);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.showcase-subtitle {
+  color: var(--color-text-secondary);
+}
+
+/* گوشی موبایل */
+.phone-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.phone {
+  width: 320px;
+  height: 620px;
+  border-radius: 35px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.9),
+    inset 0 1px 3px rgba(255, 255, 255, 0.15);
+}
+
+/* صفحه نمایش */
+.screen-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 28px;
+  overflow: hidden;
+}
+
+.bg {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+/* ناچ بالای گوشی */
+.notch-container {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  padding: 0.5rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.notch {
+  width: 160px;
+  height: 28px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 0 0 14px 14px;
+}
+
+/* دکمه‌های کناری موبایل */
+.buttons .left,
+.buttons .right {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.buttons .left {
+  left: -6px;
+  top: 120px;
+}
+
+.buttons .right {
+  right: -6px;
+  top: 160px;
+}
+
+.buttons .button {
+  width: 6px;
+  height: 40px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ریسپانسیو */
+@media (max-width: 768px) {
+  .phone {
+    width: 260px;
+    height: 520px;
+  }
+
+  .showcase-title {
+    font-size: 2.2rem;
+  }
+}
+
+/* ==== THUMB BUTTONS (Pill Buttons) ==== */
+
+.thumb {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+}
+
+.thumb.thumb-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.75rem 1.4rem;
+  border-radius: 999px;
+
+  background: rgba(20, 24, 38, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.8);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease,
+    opacity 0.25s ease;
+
+  opacity: 0.9;
+  overflow: hidden;
+}
+
+/* دایره آیکون */
+.thumb-icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: radial-gradient(
+    circle at 30% 0%,
+    rgba(255, 255, 255, 0.08),
+    rgba(0, 0, 0, 0.4)
+  );
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.thumb-icon-wrap i {
+  font-size: 1.4rem;
+  color: var(--color-primary-yellow);
+}
+
+/* متن */
+.thumb-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.thumb-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.thumb-sub {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+/* افکت روشنایی */
+.thumb-pill-glow {
+  content: "";
+  position: absolute;
+  inset: -40%;
+
+  background: radial-gradient(
+    circle at 10% 0%,
+    rgba(241, 196, 15, 0.18),
+    transparent 65%
+  );
+
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+/* هاور و اکتیو */
+.thumb.thumb-pill:hover,
+.thumb.thumb-pill.active {
+  transform: translateY(-4px);
+  border-color: rgba(241, 196, 15, 0.5);
+
+  background: linear-gradient(
+    135deg,
+    rgba(20, 24, 38, 0.95),
+    rgba(20, 20, 32, 0.95)
+  );
+
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.9),
+    0 0 18px rgba(0, 0, 0, 0.6);
+
+  opacity: 1;
+}
+
+.thumb.thumb-pill:hover .thumb-pill-glow,
+.thumb.thumb-pill.active .thumb-pill-glow {
+  opacity: 1;
+}
+
+/* رنگ لیبل وقتی اکتیوه */
+.thumb.thumb-pill.active .thumb-label {
+  color: var(--color-primary-yellow);
+}
+
+.thumb.thumb-pill.active .thumb-icon-wrap {
+  border-color: rgba(241, 196, 15, 0.6);
+}

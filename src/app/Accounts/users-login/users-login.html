@@ -1,0 +1,87 @@
+<form
+  id="user-login-form"
+  autocomplete="on"
+  #loginForm="ngForm"
+  (ngSubmit)="onSubmit(loginForm)"
+>
+  <!-- شماره موبایل -->
+  <div class="form-group-custom">
+    <label class="form-label-custom">
+      <span>شماره موبایل</span>
+      <span class="helper">۱۱ رقم، بدون فاصله</span>
+    </label>
+    <div class="input-shell">
+      <i class="bi bi-phone"></i>
+      <input
+        type="tel"
+        inputmode="numeric"
+        placeholder="مثال: ۰۹۱۲۳۴۵۶۷۸۹"
+        autocomplete="tel"
+        name="phone"
+        [(ngModel)]="loginData.phone"
+        required
+        minlength="11"
+        maxlength="11"
+      />
+    </div>
+  </div>
+
+  <!-- پسورد -->
+  <div class="form-group-custom">
+    <label class="form-label-custom">
+      <span>رمز عبور</span>
+      <span class="helper">حداقل ۸ کاراکتر</span>
+    </label>
+    <div class="input-shell">
+      <i class="bi bi-lock"></i>
+      <input
+        [type]="passwordInputType"
+        id="password"
+        placeholder="رمز عبور را وارد کن"
+        autocomplete="current-password"
+        minlength="8"
+        name="password"
+        [(ngModel)]="loginData.password"
+        required
+      />
+      <button
+        type="button"
+        class="toggle-password"
+        aria-label="نمایش رمز"
+        (mousedown)="$event.preventDefault()"
+        (click)="togglePasswordVisibility()"
+      >
+        <i class="bi" [ngClass]="passwordIconClass"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="login-row-meta">
+    <div class="form-check d-flex align-items-center">
+      <input class="form-check-input ms-2" type="checkbox" id="rememberMe" checked />
+      <label class="form-check-label" for="rememberMe">
+        من را به خاطر بسپار
+      </label>
+    </div>
+    <a href="#" class="link-muted">فراموشی رمز عبور</a>
+  </div>
+
+  <!-- پیام خطا (در صورت نیاز) -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <button type="submit" class="btn-login">
+    <span>ورود به MyApp</span>
+    <i class="bi bi-arrow-left-short"></i>
+  </button>
+
+  <div class="login-footer-text mt-4">
+    <span>
+      حساب نداری؟
+      <a routerLink="/accounts/signup">ثبت‌نام کن</a>
+    </span>
+  </div>
+
+  <div class="login-version">MyApp Super App · v1.0</div>
+</form>

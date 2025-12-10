@@ -1,13 +1,97 @@
 <!doctype html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="utf-8">
-  <title>AnamFrontend</title>
+  <title>بهتا | MyApp – اپلیکیشن هوشمند </title>
   <base href="/">
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- 🔍 SEO Meta -->
+  <meta name="description"
+        content="بهتا (MyApp) یک اپلیکیشن هوشمند برای مدیریت کارهای روزانه، برنامه‌ریزی، یادآوری‌ها و افزایش بهره‌وری است. هم‌اکنون برای اندروید و iOS دانلود کنید.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://behtaapp.net/">
+
+  <!-- 📱 Favicon & App Icons -->
+  <!-- توجه: تصاویر رو ببر توی assets/Img/Icon و مسیرها رو اینطوری بنویس -->
+  <link rel="icon" href="assets/Img/Icon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/icon/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/icon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/img/icon/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/img/icon/android-chrome-512x512.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icon/apple-touch-icon.png">
+
+  <!-- 📦 PWA Manifest -->
+  <!-- <link rel="manifest" href="assets/site.webmanifest"> -->
+
+  <!-- 🎨 PWA & Mobile Meta -->
+  <meta name="theme-color" content="#000000">
+  <meta name="application-name" content="بهتا | MyApp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="بهتا">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- 🌐 Open Graph (Social Sharing) -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fa_IR">
+  <meta property="og:title" content="بهتا | MyApp – اپلیکیشن هوشمند مدیریت کارهای روزانه">
+  <meta property="og:description"
+        content="اپلیکیشن بهتا (MyApp) همراه هوشمند شما برای مدیریت کارهای روزانه، برنامه‌ریزی و افزایش تمرکز است. تجربه‌ای سریع، امن و زیبا.">
+  <meta property="og:url" content="https://behtaapp.net/">
+  <meta property="og:site_name" content="Behta App">
+  <meta property="og:image" content="https://behtaapp.net/images/og-image-myapp.png">
+  <meta property="og:image:alt" content="نمایی از رابط کاربری اپلیکیشن بهتا (MyApp)">
+
+  <!-- 🐦 Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="بهتا | MyApp – اپلیکیشن هوشمند مدیریت کارهای روزانه">
+  <meta name="twitter:description"
+        content="دانلود اپلیکیشن بهتا MyApp برای مدیریت هوشمند کارهای روزانه، برنامه‌ریزی و افزایش تمرکز.">
+  <meta name="twitter:image" content="https://behtaapp.net/images/og-image-myapp.png">
+
+  <!-- 🅱️ Bootstrap RTL -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.rtl.min.css"
+        integrity="sha384-CfCrinSRH2IR6a4e6fy2q6ioOX7O6Mtm1L9vRvFZ1trBncWmMePhzvafv7oIcWiW"
+        crossorigin="anonymous">
+
+  <!-- 🅰️ Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+  <!-- 🎬 AOS Animation -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css"/>
+
+  <!-- ⛓ Bootstrap Icons -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 <body>
+
   <app-root></app-root>
+
+  <!-- Scripts (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+          crossorigin="anonymous"></script>
+
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 700,
+      easing: 'ease-out-cubic',
+      once: true,
+      offset: 100,
+      disable: 'mobile'
+    });
+  </script>
+
+  <!-- اگر خواستی همین main.js خودت رو هم استفاده کنی، کدش رو بذار تو assets/js/main.js و این رو فعال کن: -->
+   <script src="/assets/js/main.js"></script>
+
+
 </body>
 </html>
