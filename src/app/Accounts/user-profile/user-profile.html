@@ -31,26 +31,18 @@
         <div class="profile-main">
           <div class="avatar-column">
             <div class="avatar">
-              <img
-                [src]="avatarPreview || 'assets/img/profile-default.jpg'"
-                alt="avatar">
-            </div>
+              <img [src]="avatarPreview || 'assets/img/profile-default.jpg'" alt="avatar">
 
-            <button
-              class="avatar-edit-btn"
-              type="button"
-              [disabled]="!isEditing"
-              (click)="onAvatarClick(fileInput)">
-              <i class="bi bi-camera"></i>
-              <span>ویرایش عکس</span>
+
+            </div>
+            <button class="avatar-edit-fab align-content-center align-items-center justify-content-center " type="button" [disabled]="!isEditing" (click)="onAvatarClick(fileInput)"
+              title="تغییر تصویر پروفایل">
+              <i class="bi bi-camera-fill"></i>
             </button>
 
-            <input
-              #fileInput
-              type="file"
-              accept="image/*"
-              hidden
-              (change)="onAvatarSelected($event)">
+
+
+            <input #fileInput type="file" accept="image/*" hidden (change)="onAvatarSelected($event)">
           </div>
 
           <div class="profile-title">
@@ -71,19 +63,12 @@
 
       <!-- اکشن‌ها -->
       <div class="profile-actions">
-        <button
-          class="btn-ghost"
-          type="button"
-          (click)="onEditClick()"
-          [disabled]="isSaving">
+        <button class="btn-ghost" type="button" (click)="onEditClick()" [disabled]="isSaving">
           <i class="bi bi-pencil-square"></i>
           <span>{{ isEditing ? 'ذخیره اطلاعات ' : 'ویرایش اطلاعات ' }}</span>
         </button>
 
-        <button
-          class="btn-danger"
-          type="button"
-          (click)="onLogout()">
+        <button class="btn-danger" type="button" (click)="onLogout()">
           <i class="bi bi-box-arrow-right"></i>
           <span>خروج از حساب</span>
         </button>
@@ -115,32 +100,39 @@
         </div>
 
         <!-- متصدی بودن -->
+        <!-- متصدی بودن -->
         <div class="info-item info-operator">
           <div class="info-label-row">
             <i class="bi bi-briefcase"></i>
             <span>متصدی بودن</span>
           </div>
+
           <div class="info-value operator-toggle-wrap">
-            <button
-              type="button"
-              class="operator-chip"
-              [class.active]="isOperator"
-              [class.disabled]="!isEditing"
+            <button type="button" class="operator-chip" [class.active]="isOperator" [class.disabled]="!isEditing"
               (click)="setOperator(true)">
-              <i class="bi bi-check-circle"></i>
-              <span>متصدی هستم</span>
+              متصدی هستم
             </button>
-            <button
-              type="button"
-              class="operator-chip"
-              [class.active]="!isOperator"
-              [class.disabled]="!isEditing"
+
+            <button type="button" class="operator-chip" [class.active]="!isOperator" [class.disabled]="!isEditing"
               (click)="setOperator(false)">
-              <i class="bi bi-x-circle"></i>
-              <span>متصدی نیستم</span>
+              متصدی نیستم
             </button>
           </div>
         </div>
+
+        <!-- ✅ مبلغ قرارداد -->
+        <div class="info-item info-contract" *ngIf="isOperator">
+          <div class="info-label-row">
+            <i class="bi bi-cash-stack"></i>
+            <span>مبلغ قرارداد (تومان)</span>
+          </div>
+
+          <div class="info-value">
+            <input type="number" min="0" class="edit-input" placeholder="مثلاً 50000000"
+              [(ngModel)]="contractAmountToman" [disabled]="!isEditing" />
+          </div>
+        </div>
+
 
         <!-- شماره تماس -->
         <div class="info-item info-phone">
@@ -161,12 +153,7 @@
             <span>ایمیل</span>
           </div>
           <div class="info-value">
-            <input
-              class="edit-input"
-              type="email"
-              dir="ltr"
-              [(ngModel)]="email"
-              [disabled]="!isEditing" />
+            <input class="edit-input" type="email" dir="ltr" [(ngModel)]="email" [disabled]="!isEditing" />
           </div>
         </div>
 
@@ -179,8 +166,8 @@
           <div class="info-value">
             <span>
               {{ user?.role === 'admin' ? 'ادمین سیستم' :
-                 user?.role === 'super_admin' ? 'سوپر ادمین' :
-                 'کاربر عادی MyApp' }}
+              user?.role === 'super_admin' ? 'سوپر ادمین' :
+              'کاربر عادی MyApp' }}
             </span>
           </div>
         </div>
@@ -192,10 +179,7 @@
             <span>آدرس</span>
           </div>
           <div class="info-value">
-            <textarea
-              class="edit-textarea"
-              [(ngModel)]="address"
-              [disabled]="!isEditing"></textarea>
+            <textarea class="edit-textarea" [(ngModel)]="address" [disabled]="!isEditing"></textarea>
           </div>
         </div>
 
@@ -216,9 +200,8 @@
 </main>
 
 
-  <div class="profile-shell" *ngIf="isLoading">
-    <div class="loading-card">
-      در حال بارگیری پروفایل...
-    </div>
+<div class="profile-shell" *ngIf="isLoading">
+  <div class="loading-card">
+    در حال بارگیری پروفایل...
   </div>
-
+</div>

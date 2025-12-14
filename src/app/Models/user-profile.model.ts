@@ -7,5 +7,6 @@ export interface UserProfile {
   address: string | null;    // آدرس
   avatar: string | null;     // مسیر تصویر پروفایل
   is_operator: boolean;      // نقش متصدی بودن
+  contract_amount_toman: number | null;
   created_at: string;        // تاریخ ایجاد پروفایل
 }

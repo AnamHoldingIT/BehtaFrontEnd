@@ -15,23 +15,19 @@ import { User } from '../../Models/user.model';
 })
 export class UserProfileComponent implements OnInit {
 
-  // حالات UI
-  isLoading = true;   // تا وقتی از سرور پروفایل میاد
+  isLoading = true;
   isSaving = false;
   isEditing = false;
 
-  // یوزر از auth (اسم، فامیل، شماره...)
   user: User | null = null;
-
-  // پروفایل از سرور
   profile: UserProfile | null = null;
 
-  // فیلدهای فرم (دوطرفه با ngModel)
   email: string = '';
   address: string = '';
   isOperator: boolean = false;
 
-  // آواتار
+  contractAmountToman: number | null = null; // ✅ جدید
+
   avatarPreview: string | null = null;
   selectedAvatarFile: File | null = null;
 
@@ -40,34 +36,19 @@ export class UserProfileComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private cdr: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    // اطلاعات پایه کاربر از authUser (فقط برای نمایش اسم/شماره)
     this.loadUserFromStorage();
-
-    // پروفایل کامل را از سرور بگیر
     this.fetchProfileFromServer();
   }
 
-  // ---------- User از localStorage (فقط برای نمایش نام / شماره) ----------
-
   private loadUserFromStorage(): void {
-    if (typeof window === 'undefined') {
-      return;
-    }
-
     try {
       const raw = localStorage.getItem('authUser');
-      if (raw) {
-        this.user = JSON.parse(raw) as User;
-      }
-    } catch (e) {
-      console.error('Error parsing authUser from localStorage', e);
-    }
+      if (raw) this.user = JSON.parse(raw);
+    } catch {}
   }
-
-  // ---------- پروفایل از سرور (منبع اصلی حقیقت) ----------
 
   private fetchProfileFromServer(): void {
     this.isLoading = true;
@@ -75,64 +56,34 @@ export class UserProfileComponent implements OnInit {
 
     this.accountsService.getMyProfile().subscribe({
       next: (profile) => {
-        // پروفایل دریافتی از سرور رو روی فرم بنویس
         this.applyProfile(profile);
-
-        // همزمان تو localStorage هم ذخیره کن (برای استفاده‌های بعدی یا دیباگ)
-        this.saveProfileToStorage(profile);
-
+        localStorage.setItem('myProfile', JSON.stringify(profile));
         this.isLoading = false;
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error loading profile from server', err);
+        if (err.status === 401) this.authService.logOut();
         this.isLoading = false;
-
-        if (err.status === 401) {
-          this.authService.logOut();
-        }
-
         this.cdr.markForCheck();
       }
     });
   }
 
-  // پروفایل رو روی state و فیلدهای فرم اعمال کن
   private applyProfile(profile: UserProfile): void {
     this.profile = profile;
     this.email = profile.email ?? '';
     this.address = profile.address ?? '';
     this.isOperator = profile.is_operator;
+    this.contractAmountToman = profile.contract_amount_toman ?? null;
     this.avatarPreview = profile.avatar || null;
   }
 
-  // پروفایل رو در localStorage ذخیره کن (mirror)
-  private saveProfileToStorage(profile: UserProfile): void {
-    if (typeof window === 'undefined') return;
-
-    try {
-      localStorage.setItem('myProfile', JSON.stringify(profile));
-    } catch (e) {
-      console.error('Error saving profile to localStorage', e);
-    }
-  }
-
-  // ---------- دکمه ویرایش / ذخیره ----------
-
   onEditClick(): void {
-    // اگر هنوز پروفایل از سرور نیامده یا در حال ذخیره هستیم، کاری نکن
-    if (this.isLoading || this.isSaving) {
-      return;
-    }
-
+    if (this.isLoading || this.isSaving) return;
     if (!this.isEditing) {
-      // ورود به حالت ویرایش
       this.isEditing = true;
-      this.cdr.markForCheck();
       return;
     }
-
-    // در حالت ویرایش → کلیک یعنی ذخیره
     this.saveProfile();
   }
 
@@ -145,14 +96,19 @@ export class UserProfileComponent implements OnInit {
       formData.append('email', this.email);
       formData.append('address', this.address);
       formData.append('is_operator', String(this.isOperator));
+
+      if (this.isOperator && this.contractAmountToman !== null) {
+        formData.append(
+          'contract_amount_toman',
+          String(this.contractAmountToman)
+        );
+      }
+
       formData.append('avatar', this.selectedAvatarFile);
 
       this.accountsService.updateMyProfile(formData).subscribe({
-        next: (updated) => {
-          this.handleSaveSuccess(updated);
-        },
-        error: (err) => {
-          console.error('Error updating profile with image', err);
+        next: (updated) => this.handleSaveSuccess(updated),
+        error: () => {
           this.isSaving = false;
           this.cdr.markForCheck();
         }
@@ -162,14 +118,14 @@ export class UserProfileComponent implements OnInit {
         email: this.email,
         address: this.address,
         is_operator: this.isOperator,
+        contract_amount_toman: this.isOperator
+          ? this.contractAmountToman
+          : null,
       };
 
       this.accountsService.updateMyProfile(payload).subscribe({
-        next: (updated) => {
-          this.handleSaveSuccess(updated);
-        },
-        error: (err) => {
-          console.error('Error updating profile', err);
+        next: (updated) => this.handleSaveSuccess(updated),
+        error: () => {
           this.isSaving = false;
           this.cdr.markForCheck();
         }
@@ -178,67 +134,48 @@ export class UserProfileComponent implements OnInit {
   }
 
   private handleSaveSuccess(updated: UserProfile): void {
-    // پاسخ سرور رو منبع اصلی قرار بده
     this.applyProfile(updated);
+    localStorage.setItem('myProfile', JSON.stringify(updated));
 
-    // در localStorage هم همزمان آپدیت کن
-    this.saveProfileToStorage(updated);
-
-    // ریست حالت فرم
     this.isSaving = false;
     this.isEditing = false;
     this.selectedAvatarFile = null;
-
     this.cdr.markForCheck();
   }
-
-  // ---------- متصدی بودن ----------
 
   setOperator(isOp: boolean): void {
     if (!this.isEditing) return;
     this.isOperator = isOp;
-    this.cdr.markForCheck();
+    if (!isOp) this.contractAmountToman = null;
   }
 
-  // ---------- آواتار ----------
-
   onAvatarClick(fileInput: HTMLInputElement): void {
-    if (!this.isEditing) return;
-    fileInput.click();
+    if (this.isEditing) fileInput.click();
   }
 
   onAvatarSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (!input.files || input.files.length === 0) return;
+    if (!input.files?.length) return;
 
-    const file = input.files[0];
-    this.selectedAvatarFile = file;
+    this.selectedAvatarFile = input.files[0];
 
     const reader = new FileReader();
-    reader.onload = (e) => {
-      this.avatarPreview = e.target?.result as string;
-      this.cdr.markForCheck();
-    };
-    reader.readAsDataURL(file);
+    reader.onload = e => this.avatarPreview = e.target?.result as string;
+    reader.readAsDataURL(this.selectedAvatarFile);
   }
-
-  // ---------- دکمه خروج ----------
 
   onLogout(): void {
     this.authService.logOut();
   }
 
-  // ---------- برگشت ----------
-
   goBack(): void {
     this.router.navigate(['/']);
   }
 
-  // ---------- getter ها ----------
-
   get fullName(): string {
-    if (!this.user) return '';
-    return `${this.user.first_name} ${this.user.last_name}`.trim();
+    return this.user
+      ? `${this.user.first_name} ${this.user.last_name}`.trim()
+      : '';
   }
 
   get phone(): string {
