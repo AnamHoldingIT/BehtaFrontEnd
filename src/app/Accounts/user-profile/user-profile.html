@@ -1,0 +1,207 @@
+<!-- دکمه برگشت -->
+<button class="btn-back" type="button" (click)="goBack()">
+  <i class="bi bi-arrow-right-short"></i>
+  <span>بازگشت</span>
+</button>
+
+<!-- حباب‌ها -->
+<div class="profile-orbit">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+</div>
+
+<!-- ذرات -->
+<div class="particles">
+  <span class="particle"></span>
+  <span class="particle"></span>
+  <span class="particle"></span>
+  <span class="particle"></span>
+  <span class="particle"></span>
+  <span class="particle"></span>
+  <span class="particle"></span>
+  <span class="particle"></span>
+</div>
+
+<main class="profile-shell" *ngIf="!isLoading">
+  <section class="profile-card tilted">
+    <div class="profile-card-inner">
+
+      <!-- هدر پروفایل -->
+      <header class="profile-header">
+        <div class="profile-main">
+          <div class="avatar-column">
+            <div class="avatar">
+              <img [src]="avatarPreview || 'assets/img/profile-default.jpg'" alt="avatar">
+
+
+            </div>
+            <button class="avatar-edit-fab align-content-center align-items-center justify-content-center " type="button" [disabled]="!isEditing" (click)="onAvatarClick(fileInput)"
+              title="تغییر تصویر پروفایل">
+              <i class="bi bi-camera-fill"></i>
+            </button>
+
+
+
+            <input #fileInput type="file" accept="image/*" hidden (change)="onAvatarSelected($event)">
+          </div>
+
+          <div class="profile-title">
+            <span class="profile-title-main">
+              {{ fullName || 'کاربر MyApp' }}
+            </span>
+            <span class="profile-title-sub">
+              {{ phone || 'بدون شماره ثبت‌شده' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="profile-badge" *ngIf="profile">
+          <i class="bi bi-stars"></i>
+          <span>حساب فعال</span>
+        </div>
+      </header>
+
+      <!-- اکشن‌ها -->
+      <div class="profile-actions">
+        <button class="btn-ghost" type="button" (click)="onEditClick()" [disabled]="isSaving">
+          <i class="bi bi-pencil-square"></i>
+          <span>{{ isEditing ? 'ذخیره اطلاعات ' : 'ویرایش اطلاعات ' }}</span>
+        </button>
+
+        <button class="btn-danger" type="button" (click)="onLogout()">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>خروج از حساب</span>
+        </button>
+      </div>
+
+      <!-- گرید اطلاعات -->
+      <section class="profile-grid pt-4 px-3 " aria-label="اطلاعات کاربر">
+
+        <!-- نام -->
+        <div class="info-item info-firstname">
+          <div class="info-label-row">
+            <i class="bi bi-person"></i>
+            <span>نام</span>
+          </div>
+          <div class="info-value">
+            <span>{{ user?.first_name || '—' }}</span>
+          </div>
+        </div>
+
+        <!-- نام خانوادگی -->
+        <div class="info-item info-lastname">
+          <div class="info-label-row">
+            <i class="bi bi-person-vcard"></i>
+            <span>نام خانوادگی</span>
+          </div>
+          <div class="info-value">
+            <span>{{ user?.last_name || '—' }}</span>
+          </div>
+        </div>
+
+        <!-- متصدی بودن -->
+        <!-- متصدی بودن -->
+        <div class="info-item info-operator">
+          <div class="info-label-row">
+            <i class="bi bi-briefcase"></i>
+            <span>متصدی بودن</span>
+          </div>
+
+          <div class="info-value operator-toggle-wrap">
+            <button type="button" class="operator-chip" [class.active]="isOperator" [class.disabled]="!isEditing"
+              (click)="setOperator(true)">
+              متصدی هستم
+            </button>
+
+            <button type="button" class="operator-chip" [class.active]="!isOperator" [class.disabled]="!isEditing"
+              (click)="setOperator(false)">
+              متصدی نیستم
+            </button>
+          </div>
+        </div>
+
+        <!-- ✅ مبلغ قرارداد -->
+        <div class="info-item info-contract" *ngIf="isOperator">
+          <div class="info-label-row">
+            <i class="bi bi-cash-stack"></i>
+            <span>مبلغ قرارداد (تومان)</span>
+          </div>
+
+          <div class="info-value">
+            <input type="number" min="0" class="edit-input" placeholder="مثلاً 50000000"
+              [(ngModel)]="contractAmountToman" [disabled]="!isEditing" />
+          </div>
+        </div>
+
+
+        <!-- شماره تماس -->
+        <div class="info-item info-phone">
+          <div class="info-label-row">
+            <i class="bi bi-phone"></i>
+            <span>شماره تماس</span>
+          </div>
+          <div class="info-value">
+            <span dir="ltr">{{ phone || '—' }}</span>
+            <span class="tag">موبایل</span>
+          </div>
+        </div>
+
+        <!-- ایمیل -->
+        <div class="info-item info-email">
+          <div class="info-label-row">
+            <i class="bi bi-envelope"></i>
+            <span>ایمیل</span>
+          </div>
+          <div class="info-value">
+            <input class="edit-input" type="email" dir="ltr" [(ngModel)]="email" [disabled]="!isEditing" />
+          </div>
+        </div>
+
+        <!-- پروفایل / نقش -->
+        <div class="info-item info-profile">
+          <div class="info-label-row">
+            <i class="bi bi-person-badge"></i>
+            <span>پروفایل</span>
+          </div>
+          <div class="info-value">
+            <span>
+              {{ user?.role === 'admin' ? 'ادمین سیستم' :
+              user?.role === 'super_admin' ? 'سوپر ادمین' :
+              'کاربر عادی MyApp' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- آدرس -->
+        <div class="info-item info-address">
+          <div class="info-label-row">
+            <i class="bi bi-geo-alt"></i>
+            <span>آدرس</span>
+          </div>
+          <div class="info-value">
+            <textarea class="edit-textarea" [(ngModel)]="address" [disabled]="!isEditing"></textarea>
+          </div>
+        </div>
+
+      </section>
+
+      <footer class="profile-footer">
+        <span *ngIf="profile">
+          آخرین بروزرسانی پروفایل:
+          <strong>{{ profile.created_at | date:'yyyy/MM/dd' }}</strong>
+        </span>
+        <span>
+          MyApp · سوپراپ مدیریت روزمره
+        </span>
+      </footer>
+
+    </div>
+  </section>
+</main>
+
+
+<div class="profile-shell" *ngIf="isLoading">
+  <div class="loading-card">
+    در حال بارگیری پروفایل...
+  </div>
+</div>

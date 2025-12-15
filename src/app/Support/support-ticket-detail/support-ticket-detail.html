@@ -1,0 +1,121 @@
+<!-- src/app/Support/support-ticket-detail/support-ticket-detail.html -->
+
+<main class="ticket-layout">
+  <!-- نوار بالا + دکمه برگشت -->
+  <div class="top-bar">
+    <button class="back-chip" (click)="goBack()">
+      <i class="bi bi-arrow-right"></i>
+      <span>بازگشت به تیکت‌ها</span>
+    </button>
+
+    <div class="top-meta" *ngIf="ticket() as t">
+      <span>تیکت #{{ t.id }}</span>
+    </div>
+  </div>
+
+  <!-- کارت اصلی تیکت -->
+  <section class="ticket-shell glass-card" *ngIf="ticket() as t">
+    <!-- ===== Header (Ticket Info Bar) ===== -->
+    <header class="ticket-header">
+      <div class="header-left">
+        <h1 class="ticket-title">
+          {{ t.subject }}
+        </h1>
+
+      <div class="ticket-tags">
+          <span [class]="getStatusClass(t.status)">
+            {{ getStatusLabel(t.status) }}
+          </span>
+          <span [class]="getPriorityClass(t.priority)">
+            {{ getPriorityLabel(t.priority) }}
+          </span>
+          <span class="tag category" *ngIf="t.category">
+            {{ t.category }}
+          </span>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div class="meta">
+          <span>
+            ایجاد:
+            {{ t.created_at | date:'yyyy/MM/dd – HH:mm' }}
+          </span>
+          <span>
+            آخرین بروزرسانی:
+            {{ t.updated_at | date:'yyyy/MM/dd – HH:mm' }}
+          </span>
+        </div>
+
+        <button
+          *ngIf="t.status !== 'closed'"
+          class="close-btn"
+          (click)="closeTicket()"
+        >
+          <i class="bi bi-check2-circle"></i>
+          بستن تیکت
+        </button>
+
+        <button
+          *ngIf="t.status === 'closed'"
+          class="reopen-btn"
+          (click)="reopenTicket()"
+        >
+          <i class="bi bi-arrow-clockwise"></i>
+          باز کردن مجدد
+        </button>
+      </div>
+    </header>
+
+    <!-- ===== Conversation Section ===== -->
+    <section class="messages-wrapper" #scrollArea>
+      <div
+        *ngFor="let msg of messages()"
+        class="message-row"
+        [class.user]="!msg.is_from_staff"
+        [class.support]="msg.is_from_staff"
+      >
+        <div class="bubble">
+          <p class="text">{{ msg.body }}</p>
+          <div class="info">
+            <span class="sender">
+              {{ msg.is_from_staff ? 'پشتیبانی' : 'شما' }}
+            </span>
+            <span class="time">
+              {{ msg.created_at | date: 'yyyy/MM/dd – HH:mm' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Composer ===== -->
+    <footer class="composer" *ngIf="ticket()?.status !== 'closed'">
+      <textarea
+        [ngModel]="messageText()"
+        (ngModelChange)="onMessageChange($event)"
+        placeholder="پیامت رو بنویس…"
+      ></textarea>
+
+      <button
+        class="send-btn"
+        [disabled]="!messageText().trim() || sending()"
+        (click)="sendMessage()"
+      >
+        <i class="bi bi-send-fill"></i>
+        ارسال
+      </button>
+    </footer>
+
+    <!-- اگر بسته شده -->
+    <footer
+      class="composer-closed"
+      *ngIf="ticket()?.status === 'closed'"
+    >
+      <p>این تیکت بسته شده است.</p>
+      <button class="reopen-small" (click)="reopenTicket()">
+        باز کردن مجدد
+      </button>
+    </footer>
+  </section>
+</main>

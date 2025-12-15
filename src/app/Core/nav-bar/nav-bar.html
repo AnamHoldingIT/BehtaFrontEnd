@@ -1,0 +1,50 @@
+<nav class="navbar navbar-expand-lg navbar-custom" id="header">
+  <div class="container-fluid">
+
+    <a class="navbar-brand" href="#top">
+      <img src="assets/img/icon/Behta.png" class="navbar-logo" alt="MyApp Logo">
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="باز کردن منو">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+      <ul class="navbar-nav me-auto ms-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link active" href="#top">خانه</a></li>
+        <li class="nav-item"><a class="nav-link" href="#features">امکانات</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about">چرا ما؟</a></li>
+        <li class="nav-item"><a class="nav-link" href="#how-it-works">چطور کار می‌کند؟</a></li>
+        <li class="nav-item"><a class="nav-link" href="#faq">سوالات</a></li>
+        <li class="nav-item"><a class="nav-link" href="#download">دانلود</a></li>
+      </ul>
+
+      <!-- وقتی لاگین نیست → دکمه ورود / ثبت‌نام -->
+      <a *ngIf="!isLoggedIn" class="nav-login-btn me-3" routerLink="/accounts/login">
+        ورود / ثبت‌نام
+      </a>
+
+      <!-- وقتی لاگین هست → کپسول پروفایل + خروج -->
+      <div *ngIf="isLoggedIn" class="nav-user-wrapper me-3">
+        <button type="button" class="nav-user-pill" (click)="goToProfile()">
+          <div class="nav-user-avatar">
+            <span *ngIf="userInitial; else defaultAvatar">{{ userInitial }}</span>
+            <ng-template #defaultAvatar>
+              <i class="bi bi-person"></i>
+            </ng-template>
+          </div>
+          <span class="nav-user-name-text d-none d-md-inline">پروفایل من</span>
+        </button>
+
+
+      </div>
+
+      <!-- CTA اصلی -->
+      <a class="nav-cta-btn" href="#download">دانلود</a>
+
+    </div>
+
+  </div>
+</nav>

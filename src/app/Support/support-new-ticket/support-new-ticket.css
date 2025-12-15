@@ -1,0 +1,162 @@
+:host {
+  display: block;
+  font-family: "Vazirmatn", system-ui, -apple-system, sans-serif;
+}
+
+/* پس‌زمینه کلی صفحه */
+.nt-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(148, 163, 184, 0.18), transparent 60%),
+    linear-gradient(135deg, #020617, #020617);
+}
+
+/* هدر باکسی شیشه‌ای */
+.nt-header {
+  border-radius: 1.35rem;
+  padding: 0.9rem 1rem;
+  backdrop-filter: blur(18px);
+  background:
+    radial-gradient(circle at 0 0, rgba(251, 191, 36, 0.16), transparent 60%),
+    radial-gradient(circle at 100% 100%, rgba(79, 70, 229, 0.18), transparent 60%),
+    rgba(15, 23, 42, 0.96);
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.9),
+    0 0 30px rgba(30, 64, 175, 0.4);
+}
+
+.nt-kicker {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.96);
+}
+
+/* دکمه برگشت */
+.nt-back-btn {
+  border-radius: 999px;
+  border-color: rgba(148, 163, 184, 0.8);
+  background: rgba(15, 23, 42, 0.98);
+  color: #e5e7eb;
+  padding-inline: 0.7rem;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+
+.nt-back-btn:hover {
+  border-color: rgba(251, 191, 36, 0.9);
+  background: rgba(15, 23, 42, 1);
+  transform: translateY(-1px);
+}
+
+/* پیِل اطلاعات پاسخ‌گویی */
+.nt-pill {
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem;
+  background: rgba(15, 23, 42, 0.98);
+  border: 1px solid rgba(59, 130, 246, 0.8);
+  color: #dbeafe;
+}
+
+.nt-pill-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.9);
+}
+
+/* کارت اصلی */
+.nt-card {
+  border-radius: 1.3rem;
+  background: rgba(15, 23, 42, 0.98);
+  border: 1px solid rgba(30, 64, 175, 0.8);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.95);
+}
+
+/* کنترل‌ها شیشه‌ای‌تر */
+.nt-control {
+  border-radius: 0.85rem;
+  border-color: rgba(51, 65, 85, 0.9);
+  background-color: rgba(15, 23, 42, 0.96);
+  color: #e5e7eb;
+  font-size: 0.82rem;
+}
+
+.nt-control::placeholder {
+  color: rgba(148, 163, 184, 0.95);
+}
+
+/* چپ‌ها (دسته‌بندی) */
+.nt-chip {
+  border-radius: 999px;
+  border: 1px solid rgba(51, 65, 85, 0.9);
+  background: rgba(15, 23, 42, 0.96);
+  color: #e5e7eb;
+  padding-inline: 0.75rem;
+  font-size: 0.78rem;
+}
+
+.nt-chip.active {
+  background: rgba(59, 130, 246, 0.18);
+  border-color: rgba(59, 130, 246, 0.95);
+  color: #dbeafe;
+}
+
+/* اولویت‌ها */
+.nt-priority-chip {
+  border-radius: 999px;
+  border: 1px solid rgba(55, 65, 81, 0.9);
+  background: rgba(15, 23, 42, 0.96);
+  color: #e5e7eb;
+  font-size: 0.78rem;
+}
+
+.nt-priority-chip.active {
+  border-color: rgba(250, 204, 21, 0.95);
+  background: radial-gradient(circle at 0 0, rgba(250, 204, 21, 0.22), transparent 65%);
+  box-shadow:
+    0 0 16px rgba(250, 204, 21, 0.7),
+    0 0 22px rgba(30, 64, 175, 0.5);
+}
+
+/* دکمه اصلی */
+.nt-primary-btn {
+  border-radius: 999px;
+  padding: 0.6rem 1.3rem;
+  border: 1px solid rgba(253, 224, 71, 0.95);
+  background: linear-gradient(135deg, #fef3c7, #fbbf24);
+  color: #020617;
+  font-weight: 700;
+  box-shadow:
+    0 0 16px rgba(250, 204, 21, 0.85),
+    0 0 26px rgba(250, 204, 21, 0.6);
+}
+
+.nt-primary-btn:disabled {
+  opacity: 0.6;
+}
+
+/* دکمه گوست */
+.nt-ghost-btn {
+  border-radius: 999px;
+}
+
+/* پیام موفقیت */
+.nt-success-alert {
+  border-radius: 0.9rem;
+  background: rgba(22, 163, 74, 0.16);
+  border: 1px solid rgba(34, 197, 94, 0.8);
+  color: #bbf7d0;
+}
+
+.nt-success-alert i {
+  color: #bbf7d0;
+}
+
+/* ریسپانسیو ریز */
+@media (max-width: 576px) {
+  .nt-header {
+    padding-inline: 0.8rem;
+  }
+}

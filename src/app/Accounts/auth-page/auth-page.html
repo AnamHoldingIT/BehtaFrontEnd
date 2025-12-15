@@ -1,0 +1,62 @@
+<!-- ذرات معلق -->
+<div class="particles">
+  <span class="particle"></span>
+  <span class="particle"></span>
+  <span class="particle"></span>
+  <span class="particle"></span>
+  <span class="particle"></span>
+  <span class="particle"></span>
+  <span class="particle"></span>
+  <span class="particle"></span>
+</div>
+
+<!-- هاله‌ها -->
+<div class="auras">
+  <div class="aura aura-1"></div>
+  <div class="aura aura-2"></div>
+</div>
+
+<!-- دکمه شناور بازگشت -->
+<a class="btn-floating-home" routerLink="/">
+  <i class="bi bi-house-door-fill"></i>
+  <span>بازگشت به صفحه اصلی</span>
+</a>
+
+<!-- Toast خطا -->
+<div class="global-error" [ngClass]="{ 'is-visible': showError }">
+  <div class="global-error-inner">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    <span>{{ errorMessage }}</span>
+  </div>
+</div>
+
+<main class="login-shell">
+  <section class="login-grid">
+    <div class="panel-auth">
+      <div class="card-auth">
+        <div class="card-auth-inner">
+          <div class="card-auth-header">
+            <div class="card-auth-header-main">
+              <div class="logo-mini">A</div>
+              <div class="card-auth-header-text">
+                <span>MYAPP</span>
+                <span>ورود / ثبت‌نام</span>
+                <span>اطلاعات خود را وارد کن تا ادامه دهیم</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="login-title">سلام، خوش اومدی 👋</div>
+            <div class="login-subtitle">
+              با ورود یا ثبت‌نام، سفارش‌ها و سفرها روی همه‌ی دستگاه‌هات همگام می‌شن.
+            </div>
+          </div>
+
+          <!-- اینجا بچه‌ها (login / signup) رندر می‌شن -->
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

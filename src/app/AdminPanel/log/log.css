@@ -1,0 +1,456 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  /* اینجا به‌جای height:100%، flex می‌دیم تا داخل main-shell پر بشه */
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* شِل اصلی صفحه لاگ */
+.content-shell {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 10px;
+}
+
+/* ---------- summary cards بالا ---------- */
+
+.summary-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+@media (max-width: 991.98px) {
+  .summary-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 575.98px) {
+  .summary-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.summary-card {
+  border-radius: 16px;
+  padding: 10px 11px;
+  background:
+    radial-gradient(circle at 0 0, rgba(255, 228, 138, 0.12), transparent 60%),
+    radial-gradient(circle at 100% 100%, rgba(130, 85, 255, 0.16), transparent 60%),
+    rgba(5, 6, 24, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.78rem;
+}
+
+.summary-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  color: var(--text-muted);
+}
+
+.summary-topline span.label {
+  font-size: 0.75rem;
+}
+
+.summary-topline span.badge {
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 228, 138, 0.5);
+  color: var(--color-primary-yellow);
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+.summary-main {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.summary-main span.value {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.summary-main span.trend {
+  font-size: 0.7rem;
+}
+
+.trend-up {
+  color: var(--success);
+}
+
+.trend-down {
+  color: var(--danger);
+}
+
+/* ---------- PANEL اصلی ---------- */
+
+.panel {
+  border-radius: 18px;
+  padding: 12px 12px 10px;
+  background:
+    radial-gradient(circle at 0 0, rgba(255, 228, 138, 0.08), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(130, 85, 255, 0.14), transparent 60%),
+    rgba(5, 6, 26, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  /* این دو تا مهمن برای اسکرول داخلی */
+  flex: 1 1 auto;
+  min-height: 0;
+
+  /* ⬅️ این خط رو اضافه کن: حداکثر ارتفاع پنل نسبت به ویوپورت */
+  max-height: calc(100vh - 220px); /* اگر زیاد/کم بود، فقط این 220px رو تنظیم کن */
+}
+
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.panel-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.panel-title {
+  font-size: 0.96rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.panel-title i {
+  font-size: 1rem;
+  color: rgba(201, 178, 255, 0.9);
+}
+
+.panel-subtitle {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  max-width: 540px;
+}
+
+.panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* ---------- pill filterها ---------- */
+
+.pill-filter {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    linear-gradient(135deg,
+      rgba(5, 7, 26, 0.98),
+      rgba(9, 7, 34, 0.98));
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  padding: 4px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.pill-filter span.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--info);
+}
+
+.pill-filter strong {
+  color: #e5e7ff;
+  font-weight: 600;
+  font-size: 0.74rem;
+}
+
+.pill-filter.secondary {
+  background:
+    linear-gradient(135deg,
+      rgba(5, 8, 30, 0.98),
+      rgba(12, 10, 40, 0.98));
+}
+
+.pill-filter.secondary span.dot {
+  background: var(--danger);
+}
+
+.pill-filter.secondary.is-active {
+  border-color: rgba(248, 113, 113, 0.7);
+  box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.35);
+}
+
+/* ---------- دکمه quiet ---------- */
+
+.btn-quiet {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background:
+    linear-gradient(135deg,
+      rgba(4, 6, 24, 0.98),
+      rgba(7, 5, 28, 0.98));
+  padding: 4px 8px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.btn-quiet i {
+  font-size: 0.9rem;
+}
+
+.btn-quiet:hover {
+  border-color: rgba(255, 228, 138, 0.8);
+  color: var(--color-primary-yellow);
+}
+
+/* ---------- جدول لاگ ---------- */
+
+.log-table-shell {
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg,
+      rgba(7, 8, 32, 0.98),
+      rgba(8, 10, 36, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 6px 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.log-table-header,
+.log-row {
+  display: grid;
+  grid-template-columns: 120px 80px minmax(0, 1.1fr) 120px 120px;
+  padding: 6px 12px;
+  align-items: center;
+  column-gap: 10px;
+}
+
+@media (max-width: 991.98px) {
+
+  .log-table-header,
+  .log-row {
+    grid-template-columns: 120px 80px minmax(0, 1.2fr) 120px;
+  }
+
+  .log-col-ip {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .log-table-header {
+    display: none;
+  }
+
+  .log-row {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 4px;
+    align-items: flex-start;
+    border-radius: 12px;
+    margin: 4px 8px;
+    background: rgba(7, 10, 40, 0.75);
+  }
+}
+
+.log-table-header {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(154, 160, 184, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.log-header-cell {
+  white-space: nowrap;
+}
+
+/* این بخش اسکرول‌دار اصلیه */
+.log-rows {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(130, 85, 255, 0.7) transparent;
+}
+
+.log-rows::-webkit-scrollbar {
+  width: 6px;
+}
+
+.log-rows::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.log-rows::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--color-primary-purple), var(--color-primary-pink));
+  border-radius: 999px;
+}
+
+.log-row {
+  font-size: 0.8rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.log-row:last-child {
+  border-bottom: none;
+}
+
+/* ستون‌ها و استایل‌ها */
+
+.log-col-time {
+  color: rgba(226, 232, 255, 0.9);
+  font-feature-settings: "tnum" 1;
+}
+
+.log-col-level {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.pill-level {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.pill-level span.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+}
+
+.pill-level-info {
+  background: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.5);
+  color: #e0f2fe;
+}
+
+.pill-level-info span.dot {
+  background: var(--info);
+}
+
+.pill-level-warn {
+  background: rgba(234, 179, 8, 0.12);
+  border-color: rgba(234, 179, 8, 0.5);
+  color: #fef9c3;
+}
+
+.pill-level-warn span.dot {
+  background: var(--warning);
+}
+
+.pill-level-error {
+  background: rgba(248, 113, 113, 0.15);
+  border-color: rgba(248, 113, 113, 0.6);
+  color: #fee2e2;
+}
+
+.pill-level-error span.dot {
+  background: var(--danger);
+}
+
+.log-col-message {
+  color: #e5e7ff;
+}
+
+.log-col-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.log-meta-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.log-meta-tag {
+  padding: 2px 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(7, 10, 40, 0.96);
+  font-size: 0.7rem;
+  color: rgba(226, 232, 255, 0.9);
+}
+
+.log-meta-user {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.log-meta-user i {
+  font-size: 0.85rem;
+  color: rgba(201, 178, 255, 0.9);
+}
+
+.log-col-ip {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  font-feature-settings: "tnum" 1;
+}
+
+@media (max-width: 768px) {
+
+  .log-col-time,
+  .log-col-level,
+  .log-col-message,
+  .log-col-meta,
+  .log-col-ip {
+    padding-block: 1px;
+  }
+
+  .log-col-time {
+    font-weight: 600;
+  }
+
+  .log-row {
+    padding-block: 8px;
+  }
+}

@@ -1,0 +1,139 @@
+/* ================================================= */
+/* 🌙 Root Variables — رنگ‌ها و تم اصلی */
+/* ================================================= */
+:root {
+  --color-primary-purple: #6A0DAD;
+  --color-primary-yellow: #F1C40F;
+
+  --bg-1: #0a0f16;
+  --bg-2: #0f1320;
+
+  --color-text-light: #EAEAEA;
+  --color-text-secondary: #A0A0A0;
+  --color-silver: #BDC3C7;
+
+  --color-accent-purple: #9B59B6;
+
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-backdrop-filter: blur(25px) saturate(180%);
+  --glass-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+
+  --neon-purple: rgba(155, 89, 182, 0.6);
+  --neon-yellow: rgba(241, 196, 15, 0.6);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ================================================= */
+/* 🌙 Base Reset */
+/* ================================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Vazirmatn', sans-serif !important;
+  background: linear-gradient(135deg, var(--bg-1), var(--bg-2));
+  color: var(--color-text-light);
+  line-height: 1.6;
+}
+
+/* متن‌ها */
+h1, h2, h3, h4, h5, h6,
+p, a, button, input, textarea, select {
+  font-family: 'Vazirmatn', sans-serif !important;
+}
+
+/* لینک‌ها */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ================================================= */
+/* 🌙 Glass Components — عمومی برای کل پروژه */
+/* ================================================= */
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: var(--glass-backdrop-filter);
+  -webkit-backdrop-filter: var(--glass-backdrop-filter);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.85);
+  border-radius: 25px;
+  transition:
+    transform 0.3s ease-out,
+    box-shadow 0.3s ease-out,
+    border-color 0.3s ease-out;
+}
+
+/* ================================================= */
+/* 🌙 Holographic Hover — افکت عمومی */
+/* ================================================= */
+
+.holographic-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.holographic-panel::before {
+  content: "";
+  position: absolute;
+  top: var(--y, 50%);
+  left: var(--x, 50%);
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(
+    circle,
+    var(--neon-purple),
+    var(--neon-yellow),
+    transparent 55%
+  );
+  filter: blur(60px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .4s ease-out;
+}
+
+.holographic-panel:hover::before {
+  opacity: .18;
+}
+
+/* ================================================= */
+/* 🌙 Section Base Layout */
+/* ================================================= */
+
+section {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* padding دیگه داخل کامپوننت‌ها تنظیم میشه */
+
+/* ================================================= */
+/* 🌙 تصاویر ریسپانسیو عمومی */
+/* ================================================= */
+
+img {
+  max-width: 100%;
+  display: block;
+}

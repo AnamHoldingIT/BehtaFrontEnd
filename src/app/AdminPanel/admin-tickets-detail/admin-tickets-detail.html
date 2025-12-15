@@ -1,0 +1,268 @@
+<div class="content-shell adm-ticket-details-shell" *ngIf="ticket(); else loadingOrError">
+    <!-- هدر بالا -->
+    <header class="ticket-header">
+        <div class="ticket-header-left">
+            <button type="button" class="btn-back" (click)="goBack()">
+                <i class="bi bi-arrow-right"></i>
+                <span>بازگشت به لیست تیکت‌ها</span>
+            </button>
+
+            <div class="ticket-title-block">
+                <div class="ticket-id-row">
+                    <span class="ticket-id">تیکت #{{ ticket()!.id }}</span>
+
+                    <span class="ticket-category" *ngIf="ticket()!.category">
+                        {{ ticket()!.category }}
+                    </span>
+                </div>
+
+                <h1 class="ticket-subject">
+                    {{ ticket()!.subject }}
+                </h1>
+
+                <div class="ticket-meta-row">
+                    <span class="ticket-meta-label">تعداد پیام‌ها</span>
+                    <span class="ticket-meta-value">
+                        {{ ticket()!.messages_count }}
+                    </span>
+
+                    <span class="dot-sep">•</span>
+
+                    <span class="ticket-meta-label">ایجاد شده</span>
+                    <span class="ticket-meta-value">
+                        {{ ticket()!.created_at | date:'yyyy/MM/dd - HH:mm' }}
+                    </span>
+
+                    <span class="dot-sep">•</span>
+
+                    <span class="ticket-meta-label">آخرین فعالیت</span>
+                    <span class="ticket-meta-value">
+                        {{
+                        (ticket()!.last_message_at || ticket()!.updated_at)
+                        | date:'yyyy/MM/dd - HH:mm'
+                        }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="ticket-header-right">
+            <div class="pill-group">
+                <span [class]="getStatusClass(ticket()!.status)">
+                    {{ getStatusLabel(ticket()!.status) }}
+                </span>
+
+                <span [class]="getPriorityClass(ticket()!.priority)">
+                    {{ getPriorityLabel(ticket()!.priority) }}
+                </span>
+            </div>
+
+            <div class="header-actions">
+                <select class="adm-select small" [ngModel]="ticket()!.status" (ngModelChange)="onStatusChange($event)">
+                    <option value="open">باز</option>
+                    <option value="pending">در حال بررسی</option>
+                    <option value="answered">پاسخ داده شده</option>
+                    <option value="closed">بسته شده</option>
+                </select>
+
+                <select class="adm-select small" [ngModel]="ticket()!.priority"
+                    (ngModelChange)="onPriorityChange($event)">
+                    <option value="urgent">فوری</option>
+                    <option value="high">زیاد</option>
+                    <option value="normal">معمولی</option>
+                    <option value="low">کم</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <!-- بدنه: چت + سایدبار -->
+    <div class="ticket-body">
+        <!-- ستون چت -->
+        <section class="ticket-thread-shell">
+            <!-- لودینگ پیام‌ها -->
+            <div class="adm-loading" *ngIf="loadingMessages()">
+                <div class="adm-loading-row" *ngFor="let s of [1,2,3,4]">
+                    <span class="line short"></span>
+                    <span class="line long"></span>
+                    <span class="pill"></span>
+                </div>
+            </div>
+
+            <!-- خطا پیام‌ها -->
+            <div class="adm-empty" *ngIf="!loadingMessages() && messagesError()">
+                <i class="bi bi-exclamation-triangle"></i>
+                <p>{{ messagesError() }}</p>
+            </div>
+
+            <!-- خود thread -->
+            <div class="ticket-thread" *ngIf="!loadingMessages() && !messagesError()">
+                <div class="msg-row" *ngFor="let m of messages()"
+                    [ngClass]="m.is_from_staff ? 'msg-agent' : 'msg-user'">
+                    <div class="msg-avatar">
+                        <span *ngIf="m.is_from_staff">ادمین</span>
+                        <span *ngIf="!m.is_from_staff">کاربر</span>
+                    </div>
+
+                    <div class="msg-bubble">
+                        <div class="msg-header">
+                            <div class="msg-header-main">
+                                <span class="msg-author">
+                                    {{ m.is_from_staff ? 'پشتیبانی' : m.sender_name }}
+                                </span>
+                                <span class="msg-time">
+                                    {{ m.created_at | date: 'yyyy/MM/dd - HH:mm' }}
+                                </span>
+                            </div>
+
+                            <!-- دکمه‌های ادیت/حذف فقط برای پیام‌های ادمین -->
+                            <div class="msg-actions" *ngIf="m.is_from_staff">
+                                <button type="button" class="msg-action-btn" (click)="startEditMessage(m)"
+                                    [disabled]="savingEdit() || deletingMessageId() === m.id" title="ویرایش پیام">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button type="button" class="msg-action-btn danger" (click)="deleteMessage(m)"
+                                    [disabled]="savingEdit() || deletingMessageId() === m.id" title="حذف پیام">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- نمایش متن معمولی -->
+                        <div class="msg-body" *ngIf="editingMessageId() !== m.id">
+                            {{ m.body }}
+                        </div>
+
+                        <!-- حالت ادیت -->
+                        <div class="msg-edit" *ngIf="editingMessageId() === m.id">
+                            <textarea class="msg-edit-input" rows="3" [ngModel]="editText()"
+                                (ngModelChange)="editText.set($event)"></textarea>
+                            <div class="msg-edit-actions">
+                                <button type="button" class="btn-quiet" (click)="cancelEditMessage()"
+                                    [disabled]="savingEdit()">
+                                    <i class="bi bi-x"></i>
+                                    انصراف
+                                </button>
+                                <button type="button" class="btn-primary" (click)="saveEditMessage()"
+                                    [disabled]="savingEdit() || !editText().trim()">
+                                    <i class="bi bi-check2"></i>
+                                    ثبت تغییرات
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- اگر پیامی نیست -->
+                <div class="adm-empty small" *ngIf="messages().length === 0">
+                    <i class="bi bi-chat-dots"></i>
+                    <p>هنوز پیامی برای این تیکت ثبت نشده.</p>
+                </div>
+            </div>
+
+            <!-- باکس پاسخ -->
+            <footer class="ticket-reply">
+                <div class="reply-top">
+                    <span class="reply-title">پاسخ پشتیبانی</span>
+                    <span class="reply-hint">Shift + Enter برای خط جدید</span>
+                </div>
+
+                <textarea class="reply-input" rows="3" placeholder="متن پاسخ را بنویس..." [ngModel]="replyText()"
+                    (ngModelChange)="onReplyChange($event)" (keydown.enter)="handleReplyKeydown($event)"></textarea>
+
+                <div class="reply-actions">
+                    <button type="button" class="btn-quiet" (click)="clearReply()"
+                        [disabled]="!replyText().trim() || sendingReply()">
+                        <i class="bi bi-x"></i>
+                        پاک کردن
+                    </button>
+
+                    <button type="button" class="btn-primary" (click)="sendReply()"
+                        [disabled]="!replyText().trim() || sendingReply()">
+                        <i class="bi bi-send"></i>
+                        ارسال پاسخ
+                    </button>
+                </div>
+            </footer>
+        </section>
+
+        <!-- ستون اطلاعات تیکت -->
+        <aside class="ticket-sidebar">
+            <div class="sidebar-card">
+                <h2>اطلاعات تیکت</h2>
+
+                <dl class="meta-list">
+                    <div>
+                        <dt>شناسه</dt>
+                        <dd>#{{ ticket()!.id }}</dd>
+                    </div>
+
+                    <div>
+                        <dt>وضعیت</dt>
+                        <dd>
+                            <span [class]="getStatusClass(ticket()!.status)">
+                                {{ getStatusLabel(ticket()!.status) }}
+                            </span>
+                        </dd>
+                    </div>
+
+                    <div>
+                        <dt>اولویت</dt>
+                        <dd>
+                            <span [class]="getPriorityClass(ticket()!.priority)">
+                                {{ getPriorityLabel(ticket()!.priority) }}
+                            </span>
+                        </dd>
+                    </div>
+
+                    <div *ngIf="ticket()!.category">
+                        <dt>دسته‌بندی</dt>
+                        <dd>{{ ticket()!.category }}</dd>
+                    </div>
+
+                    <div>
+                        <dt>تعداد پیام‌ها</dt>
+                        <dd>{{ ticket()!.messages_count }}</dd>
+                    </div>
+
+                    <div>
+                        <dt>ایجاد شده</dt>
+                        <dd>{{ ticket()!.created_at | date:'yyyy/MM/dd - HH:mm' }}</dd>
+                    </div>
+
+                    <div>
+                        <dt>آخرین فعالیت</dt>
+                        <dd>
+                            {{
+                            (ticket()!.last_message_at || ticket()!.updated_at)
+                            | date:'yyyy/MM/dd - HH:mm'
+                            }}
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<!-- لودینگ / خطای کلی -->
+<ng-template #loadingOrError>
+    <div class="adm-table-shell centered">
+        <div class="adm-loading" *ngIf="loadingTicket()">
+            <div class="adm-loading-row" *ngFor="let s of [1,2,3,4]">
+                <span class="line short"></span>
+                <span class="line long"></span>
+                <span class="pill"></span>
+            </div>
+        </div>
+
+        <div class="adm-empty" *ngIf="!loadingTicket() && ticketError()">
+            <i class="bi bi-exclamation-triangle"></i>
+            <p>{{ ticketError() }}</p>
+            <button type="button" class="btn-quiet" (click)="goBack()">
+                <i class="bi bi-arrow-right"></i>
+                بازگشت به لیست تیکت‌ها
+            </button>
+        </div>
+    </div>
+</ng-template>

@@ -1,0 +1,159 @@
+<div class="content-shell">
+    <!-- هدر صفحه -->
+    <section class="page-header glass-surface">
+        <div class="page-header-main">
+            <div class="page-title-block">
+                <span class="page-kicker">PATCH NOTES CONSOLE</span>
+                <h1 class="page-title">
+                    <span class="highlight">مدیریت آپدیت‌ها</span>
+                    <span class="sub">نسخه‌های منتشرشده برای کاربران</span>
+                </h1>
+            </div>
+
+            <div class="page-header-actions">
+                <button type="button" class="btn-ghost" (click)="loadPage(page())">
+                    <i class="bi bi-arrow-clockwise"></i>
+                    رفرش
+                </button>
+
+                <button type="button" class="btn-primary" (click)="goToDetails('new')">
+                    <i class="bi bi-plus-lg"></i>
+                    نسخه جدید
+                </button>
+            </div>
+        </div>
+
+        <div class="page-header-filters">
+            <div class="filter-group">
+                <div class="field">
+                    <label>وضعیت</label>
+                    <div class="pill-select">
+                        <button type="button" *ngFor="let s of statusOptions" [class.is-active]="statusFilter() === s"
+                            (click)="statusFilter.set(s)">
+                            {{ statusLabel(s) }}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>مرتب‌سازی</label>
+                    <div class="sort-shell">
+                        <!-- چون sortBy سیگنال است: -->
+                        <select class="form-select-sm" [ngModel]="sortBy()" (ngModelChange)="sortBy.set($event)">
+                            <option value="date">بر اساس تاریخ</option>
+                            <option value="version">بر اساس نسخه</option>
+                        </select>
+
+                        <button type="button" class="icon-toggle"
+                            (click)="sortDir.set(sortDir() === 'asc' ? 'desc' : 'asc')">
+                            <i class="bi" [ngClass]="{
+                  'bi-sort-down-alt': sortDir() === 'asc',
+                  'bi-sort-down': sortDir() === 'desc'
+                }"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-group">
+                <div class="search-shell-compact">
+                    <!-- searchTerm هم سیگنال است -->
+                    <input type="search" [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)"
+                        placeholder="جستجو در نسخه، عنوان یا توضیحات...">
+                    <i class="bi bi-search"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- بدنه صفحه -->
+    <section class="page-body">
+        <div class="glass-table-wrapper">
+            <!-- وضعیت‌ها -->
+            <div *ngIf="isLoading()" class="state state-loading">
+                <div class="spinner-border spinner-border-sm" role="status"></div>
+                <span>در حال دریافت فهرست نسخه‌ها...</span>
+            </div>
+
+            <div *ngIf="error() && !isLoading()" class="state state-error">
+                <i class="bi bi-exclamation-triangle"></i>
+                <span>{{ error() }}</span>
+            </div>
+
+            <div *ngIf="!isLoading() && !error() && !visibleNotes().length" class="state state-empty">
+                <i class="bi bi-inboxes"></i>
+                <span>هیچ نسخه‌ای برای این صفحه پیدا نشد.</span>
+            </div>
+
+            <!-- جدول / لیست -->
+            <div class="table-responsive" *ngIf="!isLoading() && !error() && visibleNotes().length">
+                <table class="table patchnotes-table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>نسخه</th>
+                            <th>عنوان</th>
+                            <th>وضعیت</th>
+                            <th>تاریخ</th>
+                            <th>آخرین نسخه</th>
+                            <th class="text-end">اقدامات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let note of visibleNotes()" [ngClass]="rowAccentClass(note)">
+                            <td class="col-version">
+                                <span class="mono">v{{ note.version }}</span>
+                            </td>
+                            <td>
+                                <div class="title-cell">
+                                    <span class=" text-white">{{ note.title }}</span>
+                                    <span class="subtitle" *ngIf="note.subtitle">
+                                        {{ note.subtitle }}
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <span [class]="statusPillClass(note)">
+                                    {{ statusLabel(note.status) }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="date-chip text-white">
+                                    {{ note.date | date:'yyyy/MM/dd' }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="latest-chip" *ngIf="note.is_latest">
+                                    <i class="bi bi-stars"></i>
+                                    آخرین نسخه
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <button type="button" class="btn-row" (click)="goToDetails(note.id)">
+                                    <i class="bi bi-sliders2-vertical"></i>
+                                    مدیریت نسخه
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- pagination -->
+            <div class="pagination-shell" *ngIf="rawPage() && rawPage()!.count > pageSize()">
+                <button type="button" class="pager-btn" [disabled]="!hasPrev() || isLoading()" (click)="changePage(-1)">
+                    <i class="bi bi-chevron-right"></i>
+                    قبلی
+                </button>
+
+                <span class="pager-info">
+                    صفحه {{ page() }}
+                </span>
+
+                <button type="button" class="pager-btn" [disabled]="!hasNext() || isLoading()" (click)="changePage(1)">
+                    بعدی
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,227 @@
+<div class="content-shell adm-tickets-shell">
+  <!-- ردیف کارت‌های خلاصه -->
+  <div class="adm-summary-row">
+    <div class="adm-summary-card">
+      <div class="top">
+        <span class="label">کل تیکت‌ها</span>
+      </div>
+      <div class="bottom">
+        <span class="value">{{ stats().total }}</span>
+      </div>
+    </div>
+
+    <div class="adm-summary-card">
+      <div class="top">
+        <span class="label">باز</span>
+      </div>
+      <div class="bottom">
+        <span class="value">{{ stats().open }}</span>
+      </div>
+    </div>
+
+    <div class="adm-summary-card">
+      <div class="top">
+        <span class="label">در حال بررسی</span>
+      </div>
+      <div class="bottom">
+        <span class="value">{{ stats().pending }}</span>
+      </div>
+    </div>
+
+    <div class="adm-summary-card">
+      <div class="top">
+        <span class="label">بسته شده</span>
+      </div>
+      <div class="bottom">
+        <span class="value">{{ stats().closed }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- پنل اصلی تیکت‌ها -->
+  <section class="adm-panel panel">
+    <div class="panel-header">
+      <div class="panel-title-block">
+        <div class="panel-title">
+          <i class="bi bi-chat-dots"></i>
+          <span>مدیریت تیکت‌های پشتیبانی</span>
+        </div>
+        <div class="panel-subtitle">
+          لیست تمام تیکت‌های کاربران؛ می‌تونی بر اساس وضعیت، اولویت و جستجو فیلتر کنی و وارد صفحه‌ی چت هر تیکت بشی.
+        </div>
+      </div>
+
+      <div class="panel-actions adm-toolbar">
+        <!-- فقط تیکت‌های باز/در حال بررسی -->
+        <label class="adm-toggle">
+          <input
+            type="checkbox"
+            [checked]="onlyActive()"
+            (change)="toggleOnlyActive($event.target.checked)"
+          />
+          <span class="label">
+            <span class="dot"></span>
+            فقط تیکت‌های فعال
+          </span>
+        </label>
+
+        <!-- وضعیت -->
+        <select
+          class="adm-select"
+          [ngModel]="statusFilter()"
+          (ngModelChange)="onStatusChange($event)"
+        >
+          <option value="all">همه وضعیت‌ها</option>
+          <option value="open">باز</option>
+          <option value="pending">در حال بررسی</option>
+          <option value="answered">پاسخ داده شده</option>
+          <option value="closed">بسته شده</option>
+        </select>
+
+        <!-- اولویت -->
+        <select
+          class="adm-select"
+          [ngModel]="priorityFilter()"
+          (ngModelChange)="onPriorityChange($event)"
+        >
+          <option value="all">همه اولویت‌ها</option>
+          <option value="urgent">فوری</option>
+          <option value="high">زیاد</option>
+          <option value="normal">معمولی</option>
+          <option value="low">کم</option>
+        </select>
+
+        <!-- سرچ -->
+        <div class="adm-search">
+          <i class="bi bi-search"></i>
+          <input
+            type="text"
+            placeholder="جستجو روی شناسه یا عنوان تیکت..."
+            [ngModel]="searchTerm()"
+            (ngModelChange)="onSearchChange($event)"
+          />
+        </div>
+
+        <button type="button" class="btn-quiet" (click)="resetFilters()">
+          <i class="bi bi-arrow-counterclockwise"></i>
+          پاک کردن فیلترها
+        </button>
+      </div>
+    </div>
+
+    <div class="adm-table-shell">
+      <!-- لودینگ -->
+      <div class="adm-loading" *ngIf="loading()">
+        <div class="adm-loading-row" *ngFor="let s of [1,2,3,4,5]">
+          <span class="line short"></span>
+          <span class="line long"></span>
+          <span class="pill"></span>
+        </div>
+      </div>
+
+      <!-- خطا -->
+      <div class="adm-empty" *ngIf="!loading() && error()">
+        <i class="bi bi-exclamation-triangle"></i>
+        <p>{{ error() }}</p>
+      </div>
+
+      <!-- خالی -->
+      <div
+        class="adm-empty"
+        *ngIf="!loading() && !error() && pagedTickets().length === 0"
+      >
+        <i class="bi bi-inbox"></i>
+        <h2>هیچ تیکتی با این فیلترها پیدا نشد</h2>
+        <p>فیلترها رو ساده‌تر کن یا گزینه «فقط تیکت‌های فعال» رو غیرفعال کن.</p>
+        <button type="button" class="btn-quiet" (click)="resetFilters()">
+          <i class="bi bi-arrow-counterclockwise"></i>
+          بازنشانی فیلترها
+        </button>
+      </div>
+
+      <!-- جدول اصلی -->
+      <div class="adm-table" *ngIf="!loading() && !error() && pagedTickets().length > 0">
+        <!-- هدر -->
+        <div class="adm-table-header">
+          <div class="col-id">تیکت</div>
+          <div class="col-subject">عنوان</div>
+          <div class="col-status">وضعیت</div>
+          <div class="col-priority">اولویت</div>
+          <div class="col-updated">آخرین پیام / بروزرسانی</div>
+        </div>
+
+        <!-- ردیف‌ها -->
+        <div
+          class="adm-row"
+          *ngFor="let t of pagedTickets()"
+          (click)="openTicket(t)"
+        >
+          <div class="col-id">
+            <span class="ticket-id">#{{ t.id }}</span>
+            <span class="badge" *ngIf="t.messages_count">
+              {{ t.messages_count }} پیام
+            </span>
+          </div>
+
+          <div class="col-subject">
+            <div class="subject-line">
+              <span class="subject">{{ t.subject }}</span>
+            </div>
+            <div class="meta-line">
+              <span class="category" *ngIf="t.category">
+                {{ t.category }}
+              </span>
+            </div>
+          </div>
+
+          <div class="col-status">
+            <span [class]="getStatusClass(t.status)">
+              {{ getStatusLabel(t.status) }}
+            </span>
+          </div>
+
+          <div class="col-priority">
+            <span [class]="getPriorityClass(t.priority)">
+              {{ getPriorityLabel(t.priority) }}
+            </span>
+          </div>
+
+          <div class="col-updated">
+            <span class="label">آخرین فعالیت</span>
+            <span class="time">
+              {{
+                (t.last_message_at || t.updated_at)
+                  | date: 'yyyy/MM/dd - HH:mm'
+              }}
+            </span>
+          </div>
+        </div>
+
+        <!-- صفحه‌بندی -->
+        <footer class="adm-pagination" *ngIf="totalPages() > 1">
+          <button
+            type="button"
+            class="page-btn"
+            [disabled]="currentPage() === 1"
+            (click)="goToPage(currentPage() - 1)"
+          >
+            <i class="bi bi-chevron-right"></i>
+          </button>
+
+          <span class="page-info">
+            صفحه {{ currentPage() }} از {{ totalPages() }}
+          </span>
+
+          <button
+            type="button"
+            class="page-btn"
+            [disabled]="currentPage() === totalPages()"
+            (click)="goToPage(currentPage() + 1)"
+          >
+            <i class="bi bi-chevron-left"></i>
+          </button>
+        </footer>
+      </div>
+    </div>
+  </section>
+</div>

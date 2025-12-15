@@ -1,0 +1,121 @@
+/* سکشن چطوری کار می‌کنه؟ */
+
+.how-it-works-section {
+  padding: 100px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.how-it-works-section::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(
+    circle,
+    rgba(106, 13, 173, 0.15),
+    transparent 75%
+  );
+  filter: blur(150px);
+  z-index: 0;
+}
+
+/* تیتر و زیرتیتر */
+
+.hiw-title {
+  font-size: 3rem;
+  text-align: center;
+  font-weight: 800;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(
+    90deg,
+    var(--color-primary-yellow),
+    var(--color-primary-purple)
+  );
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 10px rgba(241, 196, 15, 0.2);
+}
+
+.hiw-subtitle {
+  text-align: center;
+  opacity: 0.85;
+  font-size: 1.1rem;
+  margin-bottom: 40px;
+  color: var(--color-text-light);
+  z-index: 2;
+  position: relative;
+}
+
+/* کارت‌های گام‌ها */
+
+.hiw-step-card {
+  padding: 40px 25px;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative; /* برای step-number */
+}
+
+.hiw-step-card:hover {
+  transform: translateY(-12px) scale(1.03);
+  border-color: rgba(241, 196, 15, 0.6);
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.9),
+    0 0 70px rgba(157, 107, 255, 0.5),
+    0 0 50px rgba(241, 196, 15, 0.4);
+}
+
+.hiw-step-card .step-number {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  font-size: 4rem;
+  font-weight: 900;
+  opacity: 0.12;
+  color: var(--color-primary-yellow);
+  pointer-events: none;
+  transition: 0.4s ease;
+  z-index: 1;
+}
+
+.hiw-step-card i {
+  font-size: 4rem;
+  margin-bottom: 25px;
+  background: linear-gradient(
+    120deg,
+    var(--color-accent-purple),
+    var(--color-primary-yellow)
+  );
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow:
+    0 0 8px var(--neon-purple),
+    0 0 20px var(--neon-yellow);
+}
+
+.hiw-step-card h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #ffffff;
+  position: relative;
+  z-index: 2;
+}
+
+.hiw-step-card p {
+  color: var(--color-silver);
+  opacity: 0.85;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 250px;
+  position: relative;
+  z-index: 2;
+}

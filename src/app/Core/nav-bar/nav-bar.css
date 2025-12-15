@@ -1,0 +1,271 @@
+.navbar-custom {
+  background: linear-gradient(
+    90deg,
+    rgba(44, 44, 60, 0.7),
+    rgba(30, 30, 47, 0.7)
+  );
+  backdrop-filter: blur(20px) saturate(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+  width: 100%;
+  max-width: 100%;
+  border-radius: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 1rem 2rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+  position: fixed;
+  top: 0; /* همیشه صفر بمونه */
+  left: 50%;
+  transform: translate(-50%, 0); /* حالت عادی */
+  z-index: 1000;
+
+  /* دیگه روی top ترنزیشن نده، فقط روی transform و width و ... */
+  transition:
+    transform .65s cubic-bezier(.22,.61,.36,1),
+    width .65s cubic-bezier(.22,.61,.36,1),
+    max-width .65s cubic-bezier(.22,.61,.36,1),
+    border-radius .45s ease-out,
+    padding .45s ease-out,
+    box-shadow .55s ease-out;
+  will-change: transform;
+}
+
+.navbar-custom.navbar-custom-dynamic {
+  width: 75%;
+  max-width: 75%;
+  border-radius: 3rem;
+  padding: 0.7rem 2rem;
+  box-shadow:
+    0 12px 30px rgba(0,0,0,0.85),
+    0 0 20px rgba(155,89,182,0.25),
+    0 0 26px rgba(255,230,140,0.18);
+
+  /* فاصله از بالا رو با translateY می‌دیم، نه با top */
+  transform: translate(-50%, 32px);
+}
+
+.navbar-logo {
+  height: 40px;
+  object-fit: contain;
+  display: block;
+}
+
+.navbar-brand {
+  color: var(--color-navbar-text);
+  font-weight: 700;
+  transition: all 0.6s ease;
+}
+
+.navbar-brand:hover {
+  color: var(--color-navbar-link-hover);
+}
+
+.nav-link {
+  color: var(--color-navbar-text);
+  margin: 0 0.75rem;
+  font-weight: 500;
+  transition:
+    color .25s ease,
+    text-shadow .25s ease,
+    transform .2s ease;
+}
+
+.nav-link:hover {
+  color: var(--color-navbar-link-hover);
+  transform: translateY(-1px);
+}
+
+.nav-link.active {
+  color: var(--color-navbar-link-active);
+  border-bottom: 2px solid var(--color-navbar-link-hover);
+}
+
+/* دکمه CTA */
+.nav-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 1.6rem;
+  font-weight: 700;
+  color: #1e1e2f;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 230, 140, 0.95),
+    rgba(208, 140, 255, 0.95)
+  );
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow:
+    0 0 18px rgba(255, 235, 150, 0.35),
+    0 0 32px rgba(180, 130, 255, 0.25);
+  transition: all .35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-cta-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -180%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.55),
+    transparent
+  );
+  transform: skewX(-25deg);
+  transition: .55s;
+}
+
+.nav-cta-btn:hover::before {
+  left: 180%;
+}
+
+.nav-cta-btn:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 0 25px rgba(255, 235, 150, 0.55),
+    0 0 45px rgba(180, 130, 255, 0.45);
+}
+
+.nav-cta-btn:active {
+  transform: scale(0.96);
+}
+
+/* آیکون دکمه باز کردن منو */
+.navbar-toggler {
+  border-color: var(--color-navbar-text);
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(234,234,234,1)' stroke-width='2' stroke-linecap='round' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+
+/* دکمه ورود/ثبت‌نام */
+.nav-login-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 1.2rem;
+  font-weight: 600;
+  color: #EAEAEA;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  text-decoration: none;
+  backdrop-filter: blur(14px) saturate(180%);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+  transition: all .35s ease;
+}
+
+.nav-login-btn:hover {
+  color: #F1C40F;
+  border-color: rgba(241, 196, 15, 0.5);
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 18px rgba(241, 196, 15, 0.4),
+    0 0 30px rgba(106, 13, 173, 0.25);
+}
+
+.nav-login-btn:active {
+  transform: scale(.95);
+}
+
+
+
+/* ====== پروفایل کاربر در نوبار ====== */
+
+.nav-user-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* کپسول پروفایل */
+.nav-user-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  color: #EAEAEA;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.7);
+  transition: all .25s ease;
+}
+
+.nav-user-pill:hover {
+  border-color: rgba(241, 196, 15, 0.7);
+  box-shadow:
+    0 0 18px rgba(241, 196, 15, 0.4),
+    0 0 30px rgba(106, 13, 173, 0.35);
+  transform: translateY(-2px);
+}
+
+/* آواتار دایره‌ای */
+.nav-user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 230, 140, 0.95),
+    rgba(208, 140, 255, 0.95)
+  );
+  color: #1e1e2f;
+  box-shadow:
+    0 0 10px rgba(0, 0, 0, 0.85),
+    0 0 14px rgba(255, 230, 140, 0.4);
+}
+
+.nav-user-avatar i {
+  font-size: 1.1rem;
+}
+
+/* متن کنار آواتار */
+.nav-user-name-text {
+  font-size: 0.9rem;
+}
+
+/* دکمه خروج */
+.nav-user-icon {
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all .25s ease;
+}
+
+.nav-user-icon i {
+  font-size: 1.3rem;
+}
+
+.nav-user-icon:hover {
+  color: var(--color-primary-yellow);
+  transform: translateY(-2px);
+}
+
+/* روی موبایل فقط آواتار بماند، متن پروفایل حذف شود */
+@media (max-width: 992px) {
+  .nav-user-name-text {
+    display: none !important;
+  }
+}

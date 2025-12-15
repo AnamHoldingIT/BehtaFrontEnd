@@ -1,0 +1,130 @@
+<!-- 🔔 دکمه شناور Patch Notes -->
+<button
+  class="floating-updates-btn"
+  type="button"
+  aria-label="مشاهده آخرین آپدیت‌ها"
+  (click)="openModal()">
+
+  <span class="btn-icon">
+    <i class="bi bi-bell-fill"></i>
+  </span>
+
+  <span
+    class="notification-dot"
+    *ngIf="showNotificationDot">
+  </span>
+</button>
+
+<!-- 💎 مودال تایم‌لاین آپدیت‌ها -->
+<div
+  class="updates-modal-overlay"
+  [class.active]="isOpen"
+  (click)="onOverlayClick($event)"
+  [attr.aria-hidden]="!isOpen">
+
+  <div class="updates-modal-dialog glass-panel">
+
+    <!-- هدر مودال -->
+    <div class="updates-modal-header">
+      <div class="header-text">
+        <h2 class="modal-title">مرکز پیام و آپدیت‌ها</h2>
+        <p class="modal-subtitle">(MyApp) مسیر تکامل آنام</p>
+      </div>
+
+      <button
+        class="close-modal-btn"
+        type="button"
+        aria-label="بستن پنجره"
+        (click)="closeModal()">
+        <span class="close-icon-wrap">
+          <i class="bi bi-x-lg"></i>
+        </span>
+      </button>
+    </div>
+
+    <!-- بدنه اسکرولی -->
+    <div class="updates-modal-body custom-scrollbar">
+
+      <!-- لودینگ ساده -->
+      <div *ngIf="isLoading" class="loading-state">
+        در حال بارگذاری آپدیت‌ها...
+      </div>
+
+      <!-- ارور -->
+      <div *ngIf="hasError" class="error-state">
+        خطایی در دریافت اطلاعات رخ داد. لطفاً بعداً دوباره تلاش کنید.
+      </div>
+
+      <!-- بدون داده -->
+      <div *ngIf="!isLoading && !hasError && !patchNotes.length" class="empty-state">
+        هنوز هیچ آپدیت عمومی منتشر نشده است.
+      </div>
+
+      <!-- تایم‌لاین -->
+      <div
+        class="timeline-container"
+        *ngIf="!isLoading && !hasError && patchNotes.length">
+
+        <div
+          class="timeline-item"
+          *ngFor="let note of patchNotes; let i = index"
+          [class.latest]="isLatest(i)">
+
+          <!-- مارکر -->
+          <div class="timeline-marker">
+            <span class="marker-dot"></span>
+          </div>
+
+          <!-- کارت -->
+          <div class="timeline-card glass-card">
+            <div class="timeline-header">
+              <span class="version-badge">
+                {{ note.version }}
+              </span>
+
+              <span class="date">
+                <!-- برای آخرین آپدیت، متن مخصوص -->
+                {{ isLatest(i) ? 'همین الان' : (note.date | date:'yyyy/MM/dd') }}
+              </span>
+
+              <span
+                class="status-pill"
+                [ngClass]="{
+                  'status-new': note.status === 'new',
+                  'status-improvement': note.status === 'improvement',
+                  'status-bugfix': note.status === 'bugfix',
+                  'status-announcement': note.status === 'announcement'
+                }">
+                {{ statusLabel(note.status) }}
+              </span>
+            </div>
+
+            <h3 class="update-title">
+              {{ note.title }}
+            </h3>
+
+            <p
+              class="update-desc"
+              *ngIf="note.description">
+              {{ note.description }}
+            </p>
+
+            <!-- لیست آیتم‌ها -->
+            <ul class="update-list" *ngIf="note.items.length">
+              <li *ngFor="let item of note.items">
+                <span
+                  class="icon-circle"
+                  [ngClass]="iconClass(item)">
+                  <i [ngClass]="iconName(item)"></i>
+                </span>
+                <span>{{ item.text }}</span>
+              </li>
+            </ul>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

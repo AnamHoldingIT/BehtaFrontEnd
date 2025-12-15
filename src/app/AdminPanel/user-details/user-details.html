@@ -1,0 +1,266 @@
+<!-- حالت اصلی -->
+<div class="user-details-shell" *ngIf="!loading && !error && user">
+
+  <!-- هدر صفحه -->
+  <header class="page-header">
+    <div class="page-header-left">
+      <button class="back-btn" type="button" (click)="goBack()">
+        <i class="bi bi-arrow-right-short"></i>
+        <span>بازگشت به لیست کاربران</span>
+      </button>
+
+      <div class="page-title">
+        <span class="kicker">ADMIN · USER DETAIL</span>
+        <h1 class="title">
+          پروفایل کاربر
+          <span class="highlight">
+            {{ user.first_name || 'بدون نام' }} {{ user.last_name || '' }}
+          </span>
+        </h1>
+        <p class="subtitle">
+          خلاصه‌ای جمع‌وجور از وضعیت حساب، نقش و اطلاعات پایهٔ این کاربر در سیستم.
+        </p>
+      </div>
+    </div>
+
+    <div class="page-header-right">
+      <span class="id-pill">ID: {{ user.id }}</span>
+      <span class="status-summary" [ngClass]="getStatusClass(user.is_active)">
+        {{ user.is_active ? 'حساب فعال' : 'حساب غیرفعال' }}
+      </span>
+    </div>
+  </header>
+
+  <!-- گرید اصلی -->
+  <div class="layout-grid">
+
+    <!-- کارت اصلی پروفایل -->
+    <section class="card profile-card">
+      <div class="profile-main">
+        <!-- آواتار -->
+        <div class="avatar-shell">
+          <div class="avatar-ring"></div>
+
+          <div class="avatar-inner has-image" *ngIf="avatarPreview; else initialsAvatar">
+            <img [src]="avatarPreview || 'assets/img/profile-default.jpg'" alt="عکس کاربر" />
+          </div>
+
+          <ng-template #initialsAvatar>
+            <div class="avatar-inner initials">
+              <span>{{ getInitials(user) }}</span>
+            </div>
+          </ng-template>
+        </div>
+
+        <!-- متن‌های اصلی -->
+        <div class="profile-text">
+          <div class="profile-name-row">
+            <span class="profile-name">
+              {{ user.first_name || 'بدون نام' }} {{ user.last_name || '' }}
+            </span>
+            <span class="profile-username" dir="ltr">
+              {{ user.phone }}
+            </span>
+          </div>
+
+          <div class="profile-chips-row">
+            <span [ngClass]="getRoleClass(user.role)">
+              {{ getRoleLabel(user.role) }}
+            </span>
+
+            <span class="chip soft-chip">
+              {{ user.role === 'normal' ? 'کاربر نهایی / مشتری' : 'کاربر سازمانی / مدیریتی' }}
+            </span>
+          </div>
+
+          <dl class="profile-meta">
+            <div class="meta-item">
+              <dt>نوع حساب</dt>
+              <dd>{{ user.is_staff ? 'دارای دسترسی مدیریت' : 'حساب عادی سیستم' }}</dd>
+            </div>
+            <div class="meta-item">
+              <dt>وضعیت ورود</dt>
+              <dd>{{ user.is_active ? 'فعال و قابل ورود' : 'غیرفعال / مسدود شده' }}</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <!-- تاریخ‌ها -->
+      <div class="profile-dates">
+        <div class="date-item">
+          <span class="date-label">تاریخ ایجاد حساب</span>
+          <span class="date-value">
+            {{ user.created_at | date: 'yyyy/MM/dd – HH:mm' }}
+          </span>
+        </div>
+        <span class="date-divider"></span>
+        <div class="date-item">
+          <span class="date-label">آخرین بروزرسانی</span>
+          <span class="date-value">
+            {{ user.updated_at | date: 'yyyy/MM/dd – HH:mm' }}
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ستون راست: اطلاعات تکمیلی -->
+    <section class="right-column">
+
+      <!-- دسترسی‌ها -->
+      <section class="card info-card">
+        <header class="card-header">
+          <span class="card-title">وضعیت دسترسی</span>
+          <span class="card-kicker">Access & Permissions</span>
+        </header>
+
+        <ul class="info-list">
+          <li class="info-row">
+            <div class="info-label-wrap">
+              <i class="bi bi-person-badge"></i>
+              <span class="label">نقش سیستمی</span>
+            </div>
+            <div class="info-value">
+              <span class="value-text">{{ getRoleLabel(user.role) }}</span>
+            </div>
+          </li>
+
+          <li class="info-row">
+            <div class="info-label-wrap">
+              <i class="bi bi-shield-lock"></i>
+              <span class="label">دسترسی مدیریتی</span>
+            </div>
+            <div class="info-value">
+              <span class="flag" [class.flag-on]="user.is_staff" [class.flag-off]="!user.is_staff">
+                {{ user.is_staff ? 'دارد' : 'ندارد' }}
+              </span>
+            </div>
+          </li>
+
+          <li class="info-row">
+            <div class="info-label-wrap">
+              <i class="bi bi-door-open"></i>
+              <span class="label">وضعیت ورود</span>
+            </div>
+            <div class="info-value">
+              <span class="flag" [class.flag-on]="user.is_active" [class.flag-off]="!user.is_active">
+                {{ user.is_active ? 'فعال و قابل ورود' : 'غیرفعال / مسدود شده' }}
+              </span>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- خلاصه سیستم -->
+      <section class="card info-card">
+        <header class="card-header">
+          <span class="card-title">خلاصه سیستم</span>
+          <span class="card-kicker">System Snapshot</span>
+        </header>
+
+        <ul class="info-list">
+          <li class="info-row">
+            <div class="info-label-wrap">
+              <i class="bi bi-hash"></i>
+              <span class="label">شناسه داخلی</span>
+            </div>
+            <div class="info-value">
+              <span class="value-mono">#{{ user.id }}</span>
+            </div>
+          </li>
+
+          <li class="info-row">
+            <div class="info-label-wrap">
+              <i class="bi bi-people"></i>
+              <span class="label">نوع کاربر</span>
+            </div>
+            <div class="info-value">
+              <span class="value-text">
+                {{ user.role === 'normal' ? 'کاربر نهایی / مشتری' : 'کاربر سازمانی / مدیریتی' }}
+              </span>
+            </div>
+          </li>
+
+          <li class="info-row">
+            <div class="info-label-wrap">
+              <i class="bi bi-activity"></i>
+              <span class="label">سطح ریسک</span>
+            </div>
+            <div class="info-value">
+              <span class="risk-pill"
+                    [ngClass]="{
+                      'risk-high': user.role === 'super_admin',
+                      'risk-mid': user.role === 'admin',
+                      'risk-low': user.role === 'normal'
+                    }">
+                {{
+                  user.role === 'super_admin'
+                    ? 'بسیار حساس'
+                    : user.role === 'admin'
+                    ? 'حساس'
+                    : 'معمولی'
+                }}
+              </span>
+            </div>
+          </li>
+
+          <li class="info-row">
+            <div class="info-label-wrap">
+              <i class="bi bi-id-card"></i>
+              <span class="label">وضعیت پروفایل</span>
+            </div>
+            <div class="info-value">
+              <span class="value-text">
+                {{
+                  user.first_name || user.last_name
+                    ? 'دارای اطلاعات شناسنامه‌ای پایه'
+                    : 'نیاز به تکمیل اطلاعات'
+                }}
+              </span>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- ناحیه خطر -->
+      <section class="card danger-card">
+        <div class="danger-main">
+          <div class="danger-icon">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+          </div>
+          <div class="danger-text">
+            <h3>حذف حساب کاربری</h3>
+            <p>
+              این عملیات دائمی است و قابل بازگشت نیست. فقط در صورت درخواست رسمی کاربر یا مسائل امنیتی انجام دهید.
+            </p>
+          </div>
+        </div>
+
+        <div class="danger-actions">
+          <button type="button" class="danger-btn" (click)="onDeleteUser()" [disabled]="deleting">
+            <i class="bi bi-trash"></i>
+            <span>{{ deleting ? 'در حال حذف...' : 'حذف این حساب' }}</span>
+          </button>
+        </div>
+      </section>
+    </section>
+  </div>
+</div>
+
+<!-- حالت لودینگ -->
+<div class="user-details-shell" *ngIf="loading">
+  <div class="loading-card">
+    <div class="spinner"></div>
+    <span>در حال بارگذاری جزئیات کاربر...</span>
+  </div>
+</div>
+
+<!-- حالت خطا -->
+<div class="user-details-shell" *ngIf="!loading && error">
+  <div class="error-card">
+    <span class="error-text">{{ error }}</span>
+    <button type="button" class="ghost-btn" (click)="goBack()">
+      بازگشت به لیست کاربران
+    </button>
+  </div>
+</div>

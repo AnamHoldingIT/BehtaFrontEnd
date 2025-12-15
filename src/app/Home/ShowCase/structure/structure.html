@@ -1,0 +1,81 @@
+<section class="showcase-section py-5">
+  <div class="container text-center">
+
+    <h2 class="showcase-title mb-2" data-aos="fade-up" data-aos-duration="900">
+      نمایش اپلیکیشن
+    </h2>
+
+    <p class="showcase-subtitle mb-5" data-aos="fade-up" data-aos-delay="150" data-aos-duration="900">
+      نگاهی مدرن، واضح و روان به رابط کاربری اپلیکیشن شما
+    </p>
+
+    <div class="row justify-content-center align-items-center g-4">
+
+      <!-- iPhone با تصویر داینامیک -->
+      <app-iphone [imageUrl]="activeImage"></app-iphone>
+
+      <!-- THUMBNAILS -->
+      <div class="col-12 col-lg-12 mt-4 d-flex justify-content-center gap-3 flex-wrap">
+
+        <button
+          class="thumb thumb-pill"
+          type="button"
+          [class.active]="activeImage === img1"
+          (click)="setActiveImage(img1)"
+          data-aos="fade-up"
+          data-aos-delay="100"
+          data-aos-duration="700">
+
+          <div class="thumb-icon-wrap">
+            <i class="bi bi-speedometer2"></i>
+          </div>
+          <div class="thumb-body">
+            <span class="thumb-label">داشبورد هوشمند</span>
+            <span class="thumb-sub">نمای کلی لحظه‌ای از وضعیت کارها</span>
+          </div>
+          <span class="thumb-pill-glow"></span>
+        </button>
+
+        <button
+          class="thumb thumb-pill"
+          type="button"
+          [class.active]="activeImage === img2"
+          (click)="setActiveImage(img2)"
+          data-aos="fade-up"
+          data-aos-delay="200"
+          data-aos-duration="700">
+
+          <div class="thumb-icon-wrap">
+            <i class="bi bi-bag-check"></i>
+          </div>
+          <div class="thumb-body">
+            <span class="thumb-label">اسکرین فروشگاه</span>
+            <span class="thumb-sub">خرید سریع و ساده سرویس‌ها</span>
+          </div>
+          <span class="thumb-pill-glow"></span>
+        </button>
+
+        <button
+          class="thumb thumb-pill"
+          type="button"
+          [class.active]="activeImage === img3"
+          (click)="setActiveImage(img3)"
+          data-aos="fade-up"
+          data-aos-delay="300"
+          data-aos-duration="700">
+
+          <div class="thumb-icon-wrap">
+            <i class="bi bi-mic-fill"></i>
+          </div>
+          <div class="thumb-body">
+            <span class="thumb-label">دستیار صوتی</span>
+            <span class="thumb-sub">کنترل با یک جمله‌ ساده</span>
+          </div>
+          <span class="thumb-pill-glow"></span>
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+</section>

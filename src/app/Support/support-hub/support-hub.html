@@ -1,0 +1,243 @@
+<app-nav-bar></app-nav-bar>
+
+<main class="support-page">
+  <div class="support-shell" data-aos="fade-up" data-aos-duration="700">
+    <!-- هدر لوکس و واضح -->
+    <header class="support-hero glass-panel">
+      <div class="support-hero-main">
+        <span class="support-kicker">SUPPORT · HELP CENTER</span>
+
+        <h1 class="support-title">
+          نیاز به کمک داری؟
+        </h1>
+        <p class="support-subtitle">
+          هر سوال، مشکل یا ابهامی درباره اپ، پرداخت یا حساب کاربری داشتی،
+          از همین‌جا با پشتیبانی در ارتباط باش. تیکت ثبت کن و روند پیگیری رو شفاف ببین.
+        </p>
+
+        <div class="support-hero-meta">
+          <div class="meta-pill">
+            <i class="bi bi-lightning-charge"></i>
+            <span>میانگین زمان پاسخ‌گویی: کمتر از ۳۰ دقیقه</span>
+          </div>
+          <div class="meta-pill">
+            <i class="bi bi-shield-lock"></i>
+            <span>مکاتبات شما به‌صورت امن نگهداری می‌شود</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="support-hero-side">
+        <div class="support-assistant-avatar">
+          <div class="assistant-glow"></div>
+          <div class="assistant-circle align-items-center align-content-center">
+            <i class="bi bi-headset"></i>
+          </div>
+        </div>
+        <div class="support-assistant-copy">
+          <strong>پشتیبانی بهتا</strong>
+          <span>۲۴/۷ در کنارته؛ فقط کافیه تیکت بزنی.</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ردیف خلاصه وضعیت تیکت‌ها -->
+    <section class="support-kpi-row" aria-label="خلاصه وضعیت تیکت‌ها">
+      <ng-container *ngIf="!loadingStats; else statsSkeleton">
+
+        <div class="kpi-card">
+          <span class="kpi-label">تیکت‌های باز</span>
+          <div class="kpi-value-row">
+            <span class="kpi-value">{{ stats.open }}</span>
+            <span class="kpi-tag kpi-open">باز</span>
+          </div>
+          <span class="kpi-caption">در انتظار بررسی</span>
+        </div>
+
+        <div class="kpi-card">
+          <span class="kpi-label">در حال بررسی</span>
+          <div class="kpi-value-row">
+            <span class="kpi-value">{{ stats.pending }}</span>
+            <span class="kpi-tag kpi-pending">پیگیری</span>
+          </div>
+          <span class="kpi-caption">در حال بررسی توسط پشتیبانی</span>
+        </div>
+
+        <!-- کارت وضعیت answered مطابق بک‌اند -->
+        <div class="kpi-card">
+          <span class="kpi-label">پاسخ داده شده</span>
+          <div class="kpi-value-row">
+            <span class="kpi-value">{{ stats.answered }}</span>
+            <span class="kpi-tag kpi-answered">پاسخ</span>
+          </div>
+          <span class="kpi-caption">منتظر تایید یا پاسخ شما</span>
+        </div>
+
+        <div class="kpi-card">
+          <span class="kpi-label">بسته شده</span>
+          <div class="kpi-value-row">
+            <span class="kpi-value">{{ stats.closed }}</span>
+            <span class="kpi-tag kpi-closed">بسته</span>
+          </div>
+          <span class="kpi-caption">مشکل حل شده / بسته شده</span>
+        </div>
+
+      </ng-container>
+
+      <ng-template #statsSkeleton>
+        <div class="kpi-card kpi-loading">
+          <span class="kpi-skeleton-line"></span>
+          <span class="kpi-skeleton-line wide"></span>
+        </div>
+        <div class="kpi-card kpi-loading">
+          <span class="kpi-skeleton-line"></span>
+          <span class="kpi-skeleton-line wide"></span>
+        </div>
+        <div class="kpi-card kpi-loading">
+          <span class="kpi-skeleton-line"></span>
+          <span class="kpi-skeleton-line wide"></span>
+        </div>
+        <div class="kpi-card kpi-loading">
+          <span class="kpi-skeleton-line"></span>
+          <span class="kpi-skeleton-line wide"></span>
+        </div>
+      </ng-template>
+    </section>
+
+    <!-- گرید اصلی -->
+    <section class="support-main-grid">
+      <!-- ستون چپ: اقدام اصلی + راهنمای سریع -->
+      <div class="support-left-column">
+        <!-- کارت اقدام اصلی: ثبت تیکت جدید -->
+        <article class="support-card support-new-ticket glass-card" data-aos="fade-up" data-aos-delay="80">
+          <div class="support-card-body">
+            <div class="support-card-icon text-center">
+              <i class="bi bi-plus-circle"></i>
+            </div>
+            <div class="support-card-main">
+              <h2>ثبت تیکت جدید</h2>
+              <p>
+                اگر مشکلی در اپ، پرداخت، ورود یا حساب کاربری داری، اینجا تیکت جدید ثبت کن تا تیم پشتیبانی بررسی کنه.
+              </p>
+
+              <ul class="support-feature-list">
+                <li>
+                  <i class="bi bi-check2-circle"></i>
+                  انتخاب نوع مشکل (فنی، مالی، حساب کاربری و ...)
+                </li>
+                <li>
+                  <i class="bi bi-check2-circle"></i>
+                  تعیین اولویت (عادی، مهم، فوری)
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="support-card-footer main-action-footer">
+            <button type="button" class="support-primary-btn" (click)="goToNewTicket()">
+              <span>ثبت تیکت جدید</span>
+              <i class="bi bi-arrow-left-circle"></i>
+            </button>
+            <button type="button" class="support-ghost-link" (click)="goToFaq()">
+              اول سوالات متداول را ببین
+              <i class="bi bi-chevron-left"></i>
+            </button>
+          </div>
+        </article>
+
+        <!-- راهنمای سریع -->
+        <article class="support-card support-quick-help glass-card" data-aos="fade-up" data-aos-delay="140">
+          <header class="support-card-header">
+            <h3>راهنمای سریع</h3>
+          </header>
+
+          <ul class="support-quick-list">
+            <li>
+              <i class="bi bi-credit-card"></i>
+              <div>
+                <p class="quick-title">مشکل در پرداخت یا اشتراک</p>
+                <p class="quick-text">
+                  اگر مبلغ از حساب کم شده ولی سرویس فعال نشده، نوع تیکت رو روی «مالی» بگذار و جزئیات تراکنش را بنویس.
+                </p>
+              </div>
+            </li>
+            <li>
+              <i class="bi bi-phone"></i>
+              <div>
+                <p class="quick-title">کد ورود یا پیامک نمی‌رسه</p>
+                <p class="quick-text">
+                  بعد از چک کردن اینترنت و آنتن، اگر مشکل ادامه داشت، تیکت با نوع «ورود به حساب» ثبت کن.
+                </p>
+              </div>
+            </li>
+          </ul>
+
+          <footer class="support-card-footer">
+            <button type="button" class="support-link-small" (click)="goToFaq()">
+              مشاهده همه سوالات متداول
+              <i class="bi bi-arrow-left-short"></i>
+            </button>
+          </footer>
+        </article>
+      </div>
+
+      <!-- ستون راست: آخرین تیکت‌ها + لینک به همه تیکت‌ها -->
+      <aside class="support-right-column">
+        <section class="support-card support-recent-card glass-card" data-aos="fade-left" data-aos-delay="110">
+          <header class="support-card-header">
+            <h3>آخرین تیکت‌های شما</h3>
+            <button type="button" class="support-link-small" (click)="goToMyTickets()">
+              همه تیکت‌ها
+              <i class="bi bi-list-ul"></i>
+            </button>
+          </header>
+
+          <div class="support-empty-state" *ngIf="recentTickets.length === 0; else ticketsList">
+            <i class="bi bi-inbox"></i>
+            <p>هنوز تیکتی ثبت نکردی. از دکمه «ثبت تیکت جدید» استفاده کن.</p>
+          </div>
+
+          <ng-template #ticketsList>
+            <ul class="support-ticket-list">
+              <li
+                class="support-ticket-item"
+                *ngFor="let ticket of recentTickets"
+                (click)="openTicket(ticket)"
+              >
+                <div class="support-ticket-main">
+                  <!-- subject مطابق مدل و بک‌اند -->
+                  <span class="support-ticket-title">{{ ticket.subject }}</span>
+                  <div class="support-ticket-meta">
+                    <span class="ticket-id">#{{ ticket.id }}</span>
+                    <span class="ticket-time">
+                      {{ ticket.updated_at | date: 'yyyy/MM/dd - HH:mm' }}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="support-ticket-tags">
+                  <!-- status -->
+                  <span [class]="getStatusClass(ticket.status)">
+                    <ng-container [ngSwitch]="ticket.status">
+                      <span *ngSwitchCase="'open'">باز</span>
+                      <span *ngSwitchCase="'pending'">در حال بررسی</span>
+                      <span *ngSwitchCase="'answered'">پاسخ داده شده</span>
+                      <span *ngSwitchCase="'closed'">بسته شده</span>
+                    </ng-container>
+                  </span>
+
+                  <!-- priority -->
+                  <span [class]="getPriorityClass(ticket.priority)">
+                    {{ getPriorityLabel(ticket.priority) }}
+                  </span>
+                </div>
+              </li>
+            </ul>
+          </ng-template>
+        </section>
+      </aside>
+    </section>
+  </div>
+</main>
+
+<app-footer></app-footer>

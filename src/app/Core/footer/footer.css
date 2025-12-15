@@ -1,0 +1,120 @@
+/* ================================================= */
+/* FOOTER */
+/* ================================================= */
+
+.footer-section {
+  background: var(--bg-1);
+  padding: 6rem 0 2rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 1px;
+  background: var(--glass-border);
+  box-shadow: 0 0 20px var(--neon-purple);
+}
+
+.footer-title {
+  color: var(--color-text-light);
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: 1.3rem;
+}
+
+.footer-title.footer-brand {
+  color: var(--color-primary-yellow);
+  text-shadow: 0 0 8px var(--neon-yellow);
+}
+
+.footer-text,
+.footer-support {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.footer-support {
+  margin-top: 1rem;
+}
+
+.footer-support span {
+  opacity: 0.7;
+}
+
+.footer-support a {
+  color: var(--color-silver);
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.footer-support a:hover {
+  color: var(--color-primary-yellow);
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.75rem;
+}
+
+.footer-links a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: var(--color-text-light);
+  transform: translateX(5px);
+  text-shadow: 0 0 5px rgba(234, 234, 234, 0.4);
+}
+
+.social-icons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: start;
+}
+
+@media (min-width: 992px) {
+  .social-icons {
+    justify-content: center;
+  }
+}
+
+.social-icons a {
+  font-size: 1.75rem;
+  color: var(--color-text-secondary);
+  transition: 0.3s ease;
+  text-decoration: none;
+}
+
+.social-icons a:hover {
+  color: var(--color-primary-yellow);
+  text-shadow: 0 0 15px var(--neon-yellow);
+}
+
+.footer-content {
+  position: relative;
+  z-index: 1;
+}
+
+.footer-copyright {
+  text-align: center;
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+  font-size: 0.9rem;
+  padding-top: 2rem;
+  margin-top: 2rem;
+  border-top: 1px solid var(--glass-border);
+}

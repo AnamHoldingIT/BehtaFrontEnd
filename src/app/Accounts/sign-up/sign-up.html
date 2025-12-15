@@ -1,0 +1,85 @@
+<form autocomplete="on" #SignUpForm="ngForm" (ngSubmit)="onSubmit(SignUpForm)">
+  <!-- نام و نام خانوادگی -->
+  <div class="form-group-custom">
+    <label class="form-label-custom">
+      <span>نام </span>
+    </label>
+    <div class="input-shell">
+      <i class="bi bi-person"></i>
+      <input type="text" [(ngModel)]="signUpData.first_name" name="first_name" placeholder="مثال: آرمان" required />
+    </div>
+  </div>
+
+  <div class="form-group-custom">
+    <label class="form-label-custom">
+      <span> نام خانوادگی</span>
+    </label>
+    <div class="input-shell">
+      <i class="bi bi-person"></i>
+      <input type="text" [(ngModel)]="signUpData.last_name" name="last_name" placeholder="مثال: احمدی" required />
+    </div>
+  </div>
+
+  <!-- شماره موبایل -->
+  <div class="form-group-custom">
+    <label class="form-label-custom">
+      <span>شماره موبایل</span>
+      <span class="helper">برای ورود / بازیابی حساب</span>
+    </label>
+    <div class="input-shell">
+      <i class="bi bi-phone"></i>
+      <input type="tel" [(ngModel)]="signUpData.phone" name="phone" inputmode="numeric" placeholder="مثال: ۰۹۱۲۳۴۵۶۷۸۹" autocomplete="tel" required />
+    </div>
+  </div>
+
+  <!-- رمز عبور -->
+  <div class="form-group-custom">
+    <label class="form-label-custom">
+      <span>رمز عبور</span>
+      <span class="helper">حداقل ۸ کاراکتر امن</span>
+    </label>
+    <div class="input-shell">
+      <i class="bi bi-lock"></i>
+      <input [type]="passwordType" minlength="8" [(ngModel)]="signUpData.password" name="password" placeholder="یک رمز عبور امن انتخاب کن" required />
+      <button type="button" class="toggle-password" aria-label="نمایش رمز" (mousedown)="$event.preventDefault()" (click)="togglePassword()">
+        <i class="bi" [ngClass]="passwordIconClass"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- تکرار رمز -->
+  <div class="form-group-custom">
+    <label class="form-label-custom">
+      <span>تکرار رمز عبور</span>
+    </label>
+    <div class="input-shell">
+      <i class="bi bi-lock-fill"></i>
+      <input [type]="confirmPasswordType" minlength="8" [(ngModel)]="signUpData.password2" name="password2" placeholder="رمز عبور را دوباره وارد کن" required />
+      <button type="button" class="toggle-password" aria-label="نمایش رمز" (mousedown)="$event.preventDefault()" (click)="toggleConfirmPassword()">
+        <i class="bi" [ngClass]="confirmPasswordIconClass"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- نمایش پیام خطا -->
+  <div *ngIf="errorMessage" class="error-message">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <button type="submit" class="btn-login">
+    <span>ثبت‌نام در MyApp</span>
+    <i class="bi bi-arrow-left-short"></i>
+  </button>
+
+  <div class="login-footer-text mt-4">
+    <span>
+      قبلاً حساب داری؟
+      <a routerLink="/accounts/login">وارد شو</a>
+    </span>
+    <span>
+      <a href="#">راهنمای شروع سریع</a>
+    </span>
+  </div>
+
+  <div class="login-version">MyApp Super App · v1.0</div>
+</form>

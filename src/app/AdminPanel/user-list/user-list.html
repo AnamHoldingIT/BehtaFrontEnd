@@ -1,0 +1,130 @@
+<div class="user-list-shell">
+  <!-- سربرگ -->
+  <div class="user-list-header">
+    <div class="title-block">
+      <span class="kicker">ADMIN · USERS</span>
+      <h1 class="title">
+        مدیریت <span class="highlight">کاربران سیستم</span>
+      </h1>
+      <p class="subtitle">
+        مشاهده و مدیریت تمامی کاربران ثبت‌شده در سامانه.
+      </p>
+    </div>
+
+    <div class="stats-block">
+      <div class="stat-card">
+        <span class="label">کل کاربران</span>
+        <span class="value">{{ users.length }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ فیلترها -->
+  <div class="filters-row">
+    <!-- سرچ -->
+    <div class="input-group">
+      <label for="userSearch">جستجو</label>
+      <div class="input-shell">
+        <i class="bi bi-search"></i>
+        <input
+          id="userSearch"
+          type="search"
+          placeholder="نام، شماره موبایل، نقش..."
+          [(ngModel)]="searchTerm"
+        />
+      </div>
+    </div>
+
+    <!-- نقش -->
+    <div class="input-group">
+      <label for="roleFilter">نقش</label>
+      <select id="roleFilter" class="opt-bg" [(ngModel)]="roleFilter">
+        <option value="all">همه نقش‌ها</option>
+        <option value="super_admin">سوپر ادمین</option>
+        <option value="admin">ادمین</option>
+        <option value="normal">کاربر عادی</option>
+      </select>
+    </div>
+
+    <!-- وضعیت -->
+    <div class="input-group">
+      <label for="statusFilter">وضعیت</label>
+      <select id="statusFilter" class="opt-bg" [(ngModel)]="statusFilter">
+        <option value="all">همه</option>
+        <option value="active">فقط فعال</option>
+        <option value="inactive">فقط غیرفعال</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header-row">
+      <span *ngIf="loading">در حال بارگذاری لیست کاربران...</span>
+      <span *ngIf="!loading && !error && filteredUsers.length === 0">
+        هیچ کاربری مطابق فیلترهای فعلی یافت نشد.
+      </span>
+      <span class="error-pill" *ngIf="error">{{ error }}</span>
+    </div>
+
+    <div class="table-wrapper" *ngIf="!loading && filteredUsers.length > 0">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>شماره موبایل</th>
+            <th>نام</th>
+            <th>نقش</th>
+            <th>وضعیت</th>
+            <th>تاریخ ایجاد</th>
+            <th class="actions-col">عملیات</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of filteredUsers">
+            <td>
+              <span class="mono">{{ user.phone }}</span>
+            </td>
+            <td>
+              <div class="user-name-cell">
+                <span class="name">
+                  {{ user.first_name }} {{ user.last_name }}
+                </span>
+                <span class="id">ID: {{ user.id }}</span>
+              </div>
+            </td>
+            <td>
+              <span [ngClass]="getRoleClass(user.role)">
+                {{ getRoleLabel(user.role) }}
+              </span>
+            </td>
+            <td>
+              <span [ngClass]="getStatusClass(user.is_active)">
+                {{ user.is_active ? 'فعال' : 'غیرفعال' }}
+              </span>
+            </td>
+            <td>
+              <span class="date">
+                {{ user.created_at | date: 'yyyy/MM/dd – HH:mm' }}
+              </span>
+            </td>
+            <td class="actions-col">
+              <button
+                type="button"
+                class="icon-btn soft"
+                (click)="onViewUser(user)"
+              >
+                <i class="bi bi-eye"></i>
+              </button>
+              <button
+                type="button"
+                class="icon-btn danger"
+                (click)="onDeleteUser(user)"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
